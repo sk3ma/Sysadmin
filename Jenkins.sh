@@ -35,8 +35,6 @@ jenkins() {
 # Maven installation.
 maven() {
     echo -e "\e[1;3mInstalling Maven\e[m"
-    mkdir -v maven
-    cd maven
     wget --progress=bar:force https://dlcdn.apache.org/maven/maven-3/3.8.4/binaries/apache-maven-3.8.4-bin.tar.gz
     tar -xvzf apache-maven-3.8.4-bin.tar.gz
     mv -v apache-maven-3.8.4 maven
@@ -68,6 +66,7 @@ service() {
     echo -e "\e[1;3mStarting Jenkins\e[m"
     systemctl restart jenkins
     systemctl enable jenkins
+    echo -e "\e[1;3mRevealing password\e[m"
     cat /var/lib/jenkins/secrets/initialAdminPassword
 #    echo -e "\e[1;3;5mExecuting Ansible script...\e[m"
 #    source /vagrant/Ansible.sh
