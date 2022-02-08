@@ -76,7 +76,7 @@ service() {
 
 # Calling functions.
 if [[ -f /etc/lsb-release ]]; then
-    echo -e "\e[1;3mUbuntu detected...\e[m"
+    echo -e "\e[1;3mUbuntu detected, proceeding...\e[m"
     java
     jenkins
     maven
