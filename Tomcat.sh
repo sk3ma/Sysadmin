@@ -7,54 +7,54 @@
 
 # Declaring variables.
 VERSION=9.0.56
-#USERID=$(id -u)
+USERID=$(id -u)
 
 # Sanity checking.
-#if [[ ${USERID} -ne "0" ]]; then
-#    echo -e "\e[1;3mYou must be root, exiting.\e[m"
-#    exit 1
-#fi
+if [[ ${USERID} -ne "0" ]]; then
+    echo -e "\e[1;3mYou must be root, exiting.\e[m"
+    exit 1
+fi
 
 # Java installation.
 java() {
     echo -e "\e[1;3mInstalling Java\e[m"
     cd /tmp
-    sudo apt update
-    sudo apt install openjdk-11-jdk -qy
+    apt update
+    apt install openjdk-11-jdk -qy
 }
 
 # Tomcat installation.
 tomcat() {
     echo -e "\e[1;3mInstalling Tomcat\e[m"
-    sudo mkdir /opt/tomcat
-    sudo useradd -mUd /opt/tomcat -s /bin/false tomcat
-    sudo wget --progress=bar:force https://dlcdn.apache.org/tomcat/tomcat-9/v${VERSION}/bin/apache-tomcat-${VERSION}.tar.gz
-    sudo tar -xvzf apache-tomcat-${VERSION}.tar.gz
-    sudo mv apache-tomcat-${VERSION} /opt/tomcat
-    sudo ln -s /opt/tomcat/apache-tomcat-${VERSION} /opt/tomcat/latest
+    mkdir -v /opt/tomcat
+    useradd -mUd /opt/tomcat -s /bin/false tomcat
+    wget --progress=bar:force https://dlcdn.apache.org/tomcat/tomcat-9/v${VERSION}/bin/apache-tomcat-${VERSION}.tar.gz
+    tar -xvzf apache-tomcat-${VERSION}.tar.gz
+    mv -v apache-tomcat-${VERSION} /opt/tomcat
+    ln -s /opt/tomcat/apache-tomcat-${VERSION} /opt/tomcat/latest
 }
 
 # Changing permissions.
 permissions() {
     echo -e "\e[1;3mAdjusting permissions\e[m"
-    sudo chown -R tomcat: /opt/tomcat
-    sudo bash -c 'chmod +x /opt/tomcat/latest/bin/*.sh'
+    chown -R tomcat: /opt/tomcat
+    bash -c 'chmod +x /opt/tomcat/latest/bin/*.sh'
 }
 
 # Adding exception.
 firewall() {
     echo -e "\e[1;3mAdjusting firewall\e[m"
-    sudo sed -ie 's/port="8080"/port="8090"/g' /opt/tomcat/latest/conf/server.xml
-    sudo ufw allow 8090/tcp
-    echo "y" | sudo ufw enable
-    sudo ufw reload
+    sed -ie 's/port="8080"/port="8090"/g' /opt/tomcat/latest/conf/server.xml
+    ufw allow 8090/tcp
+    echo "y" | ufw enable
+    ufw reload
 }
 
 # Creating unit file.
 create() {
     echo -e "\e[1;3mCreating service\e[m"
     cd /etc/systemd/system/
-    sudo tee tomcat-ubuntu << STOP
+    tee tomcat-ubuntu << STOP
 [Unit]
 Description=Tomcat 9 servlet container
 After=network.target
@@ -79,17 +79,17 @@ ExecStop=/opt/tomcat/latest/bin/shutdown.sh
 [Install]
 WantedBy=multi-user.target
 STOP
-    sudo mv tomcat-ubuntu tomcat.service
-    sudo systemctl daemon-reload
-    sudo systemctl start tomcat
+    mv -v tomcat-ubuntu tomcat.service
+    systemctl daemon-reload
+    systemctl start tomcat
 }
 
 # Tomcat users.
 users() {
     echo -e "\e[1;3mCreating users\e[m"
-    sudo cp /opt/tomcat/latest/conf/tomcat-users.xml /opt/tomcat/latest/conf/tomcat-users.orig
-    sudo rm -f /opt/tomcat/latest/conf/tomcat-users.xml
-    sudo tee -a /opt/tomcat/latest/conf/tomcat-users.xml << STOP
+    cp -v /opt/tomcat/latest/conf/tomcat-users.xml /opt/tomcat/latest/conf/tomcat-users.orig
+    rm -f /opt/tomcat/latest/conf/tomcat-users.xml
+    tee -a /opt/tomcat/latest/conf/tomcat-users.xml << STOP
 <?xml version="1.0" encoding="UTF-8"?>
 <tomcat-users xmlns="http://tomcat.apache.org/xml"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -109,15 +109,15 @@ STOP
 # Enabling service.
 start() {
     echo -e "\e[1;3mEnabling service\e[m"
-    sudo systemctl enable tomcat
-    sudo systemctl restart tomcat  
+    systemctl enable tomcat
+    systemctl restart tomcat  
     echo -e "\e[1;3;5mInstallation is complete\e[m"
     exit
 }
 
 # Calling functions.
 if [[ -f /etc/lsb-release ]]; then
-    echo -e "\e[1;3mUbuntu detected...\e[m"
+    echo -e "\e[1;3mUbuntu detected, proceeding...\e[m"
     java
     tomcat
     permissions
