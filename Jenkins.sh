@@ -29,7 +29,7 @@ jenkins() {
     bash -c 'echo "deb https://pkg.jenkins.io/debian-stable binary/" >> /etc/apt/sources.list'
     echo -e "\e[1;3mInstalling Jenkins\e[m"
     apt update
-    apt install jenkins -qy
+    apt install jenkins git -qy
 }
 
 # Maven installation.
