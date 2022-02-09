@@ -10,7 +10,7 @@ USERID=$(id -u)
 
 # Sanity checking.
 if [[ ${USERID} -ne "0" ]]; then
-    echo -e "\e[1;3mYou must be root, exiting.\e[m"
+    echo -e "\e[1;3;5mYou must be root, exiting.\e[m"
     exit 1
 fi
 
@@ -70,12 +70,13 @@ service() {
     cat /var/lib/jenkins/secrets/initialAdminPassword
 #    echo -e "\e[1;3;5mExecuting Ansible script...\e[m"
 #    source /vagrant/Ansible.sh
+     echo -e "\e[1;3;5mConfigure Jenkins webUI...\e[m"
     exit
 }
 
 # Calling functions.
 if [[ -f /etc/lsb-release ]]; then
-    echo -e "\e[1;3mUbuntu detected, proceeding...\e[m"
+    echo -e "\e[1;3;5mUbuntu detected, proceeding...\e[m"
     java
     jenkins
     maven
