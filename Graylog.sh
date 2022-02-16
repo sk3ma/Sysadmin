@@ -158,9 +158,6 @@ firewall() {
     ufw allow 9200/tcp
     echo "y" | ufw enable
     ufw reload
-    echo -e "\e[1;3mTesting Elasticsearch\e[m"
-    curl -XGET "http://192.168.33.70:9200"
-    ss -anp | grep 9200
     echo -e "\e[1;3;5mFinished, configure Graylog server...\e[m"
     exit
 }
