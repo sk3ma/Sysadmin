@@ -21,7 +21,7 @@ fi
 java() {
     echo -e "\e[1;3mInstalling Java\e[m"
     apt update
-    apt install openjdk-11-jdk -qy
+    apt install openjdk-8-jdk -qy
 }
 
 # MongoDB installation.
@@ -69,15 +69,19 @@ elastic() {
     cp -v elasticsearch.{yml,orig}
     rm -f elasticsearch.yml
     tee elasticsearch.yml << STOP
+# Elasticsearch configuration.
 path.data: /var/lib/elasticsearch
 path.logs: /var/log/elasticsearch
+node.name: "Elasticsearch"
 cluster:
   name: graylog
 network:
   host: 0.0.0.0
+  bind_host: 127.0.0.1
 http:
+  host: 192.168.33.70
   port: 9200
-discovery.seed_hosts: ["host1", "host2"]
+discovery.seed_hosts: [0.0.0.0]
 STOP
   systemctl restart elasticsearch
 }
@@ -154,6 +158,9 @@ firewall() {
     ufw allow 9200/tcp
     echo "y" | ufw enable
     ufw reload
+    echo -e "\e[1;3mTesting Elasticsearch\e[m"
+    curl -XGET "http://192.168.33.70:9200"
+    ss -anp | grep 9200
     echo -e "\e[1;3;5mFinished, configure Graylog server...\e[m"
     exit
 }
