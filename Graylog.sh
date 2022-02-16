@@ -53,7 +53,6 @@ STOP
     systemctl daemon-reload
     systemctl enable --now mongodb
     systemctl start mongodb
-    systemctl status mongod -l
 }
 
 # Elasticsearch installation.
