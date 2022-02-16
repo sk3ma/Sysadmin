@@ -83,9 +83,9 @@ http:
   port: 9200
 discovery.seed_hosts: [0.0.0.0]
 STOP
-  sed -ie 's/-Xms1g/-Xms2g/g' jvm.options
-  sed -ie 's/-Xmx1g/-Xmx2g/g' jvm.options
-  systemctl restart elasticsearch
+    sed -ie 's/-Xms1g/-Xms2g/g' jvm.options
+    sed -ie 's/-Xmx1g/-Xmx2g/g' jvm.options
+    systemctl restart elasticsearch
 }
 
 # Graylog installation.
