@@ -53,6 +53,7 @@ STOP
     systemctl daemon-reload
     systemctl enable --now mongodb
     systemctl start mongodb
+    systemctl status mongod -l
 }
 
 # Elasticsearch installation.
@@ -69,19 +70,22 @@ elastic() {
     rm -f elasticsearch.yml
     tee elasticsearch.yml << STOP
 # Elasticsearch configuration.
-path.data: /var/lib/elasticsearch
-path.logs: /var/log/elasticsearch
 node.name: "Elasticsearch"
+path:
+  data: /var/lib/elasticsearch
+  logs: /var/log/elasticsearch
 cluster:
   name: graylog
 network:
   host: 0.0.0.0
-  bind_host: 127.0.0.1
+#  bind_host: 127.0.0.1
 http:
   host: 192.168.33.70
   port: 9200
 discovery.seed_hosts: [0.0.0.0]
 STOP
+  sed -ie 's/-Xms1g/-Xms2g/g' jvm.options
+  sed -ie 's/-Xmx1g/-Xmx2g/g' jvm.options
   systemctl restart elasticsearch
 }
 
@@ -93,7 +97,7 @@ graylog() {
     dpkg -i graylog-4.2-repository_latest.deb
     apt update
     apt install graylog-server pwgen -qy
-    rm graylog-4.2-repository_latest.deb
+    rm -f graylog-4.2-repository_latest.deb
     echo -e "\e[1;3mStarting Graylog\e[m"
     systemctl start graylog-server
     systemctl enable graylog-server
@@ -157,6 +161,9 @@ firewall() {
     ufw allow 9200/tcp
     echo "y" | ufw enable
     ufw reload
+    echo -e "\e[1;3mTesting Elasticsearch\e[m"
+    curl -X GET "http://192.168.33.70:9200"
+    ss -anp | grep 9200
     echo -e "\e[1;3;5mFinished, configure Graylog server...\e[m"
     exit
 }
