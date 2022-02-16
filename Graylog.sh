@@ -9,7 +9,7 @@
 USERID=$(id -u)
 ROOTPASS=$(echo -n P@ssword321 | sha256sum | cut -d" " -f1)
 IPADDR=192.168.33.70
-EMAIL="sk3ma87@gmail.com"
+EMAIL="levon@locstat.co.za"
 
 # Sanity checking.
 if [[ ${USERID} -ne "0" ]]; then
@@ -53,13 +53,14 @@ STOP
     systemctl daemon-reload
     systemctl enable --now mongodb
     systemctl start mongodb
+    systemctl status mongod -l
 }
 
 # Elasticsearch installation.
 elastic() {
     echo -e "\e[1;3mAdding repository\e[m"
     wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | apt-key add -
-    echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | tee –a /etc/apt/sources.list.d/elastic-7.x.list
+    echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | tee –a /etc/apt/sources.list.d/elastic-6.x.list
     echo -e "\e[1;3mInstalling Elasticsearch\e[m"
     apt update
     apt install elasticsearch -qy
@@ -70,10 +71,13 @@ elastic() {
     tee elasticsearch.yml << STOP
 path.data: /var/lib/elasticsearch
 path.logs: /var/log/elasticsearch
-cluster.name: graylog
-network.host: 0.0.0.0
-http.port: 9200
-discovery.seed_hosts: ["host1", "host2"]  
+cluster:
+  name: graylog
+network:
+  host: 0.0.0.0
+http:
+  port: 9200
+discovery.seed_hosts: ["host1", "host2"]
 STOP
   systemctl restart elasticsearch
 }
@@ -82,11 +86,11 @@ STOP
 graylog() {
     echo -e "\e[1;3mInstalling Graylog\e[m"
     cd /opt
-    wget --progress=bar:force https://packages.graylog2.org/repo/packages/graylog-3.3-repository_latest.deb
-    dpkg -i graylog-3.3-repository_latest.deb
+    wget --progress=bar:force https://packages.graylog2.org/repo/packages/graylog-4.2-repository_latest.deb
+    dpkg -i graylog-4.2-repository_latest.deb
     apt update
     apt install graylog-server pwgen -qy
-    rm -f graylog-3.3-repository_latest.deb
+    rm graylog-4.2-repository_latest.deb
     echo -e "\e[1;3mStarting Graylog\e[m"
     systemctl start graylog-server
     systemctl enable graylog-server
