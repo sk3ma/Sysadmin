@@ -9,7 +9,7 @@
 USERID=$(id -u)
 ROOTPASS=$(echo -n P@ssword321 | sha256sum | cut -d" " -f1)
 IPADDR=192.168.33.70
-EMAIL="levon@locstat.co.za"
+EMAIL="sk3ma87@gmail.com"
 
 # Sanity checking.
 if [[ ${USERID} -ne "0" ]]; then
@@ -53,7 +53,6 @@ STOP
     systemctl daemon-reload
     systemctl enable --now mongodb
     systemctl start mongodb
-    systemctl status mongod -l
 }
 
 # Elasticsearch installation.
@@ -87,7 +86,7 @@ graylog() {
     dpkg -i graylog-3.3-repository_latest.deb
     apt update
     apt install graylog-server pwgen -qy
-    rm graylog-3.3-repository_latest.deb
+    rm -f graylog-3.3-repository_latest.deb
     echo -e "\e[1;3mStarting Graylog\e[m"
     systemctl start graylog-server
     systemctl enable graylog-server
