@@ -2,14 +2,14 @@
 
 ##############################################################################
 # The purpose of the script is to automate a Jenkins installation on Ubuntu. #    
-# The script installs Java 11, Elasticsearch, MongoDB and Graylog server.    #
+# The script installs Java 8, Elasticsearch, MongoDB and Graylog server.     #
 ##############################################################################
 
 # Declaring variables.
 USERID=$(id -u)
 ROOTPASS=$(echo -n P@ssword321 | sha256sum | cut -d" " -f1)
 IPADDR=192.168.33.70
-EMAIL="levon@locstat.co.za"
+EMAIL="sk3ma87@gmail.com"
 
 # Sanity checking.
 if [[ ${USERID} -ne "0" ]]; then
@@ -53,7 +53,6 @@ STOP
     systemctl daemon-reload
     systemctl enable --now mongodb
     systemctl start mongodb
-    systemctl status mongod -l
 }
 
 # Elasticsearch installation.
@@ -163,7 +162,6 @@ firewall() {
     ufw reload
     echo -e "\e[1;3mTesting Elasticsearch\e[m"
     curl -X GET "http://192.168.33.70:9200"
-    ss -anp | grep 9200
     echo -e "\e[1;3;5mFinished, configure Graylog server...\e[m"
     exit
 }
