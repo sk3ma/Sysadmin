@@ -9,7 +9,7 @@
 USERID=$(id -u)
 ROOTPASS=$(echo -n P@ssword321 | sha256sum | cut -d" " -f1)
 IPADDR=192.168.33.70
-EMAIL="levon@locstat.co.za"
+EMAIL="sk3ma87@gmail.com"
 
 # Sanity checking.
 if [[ ${USERID} -ne "0" ]]; then
@@ -68,7 +68,7 @@ elastic() {
     cp -v elasticsearch.{yml,orig}
     rm -f elasticsearch.yml
     tee elasticsearch.yml << STOP
-# Elasticsearch configuration.
+# Custom configuration.
 node.name: "Elasticsearch"
 path:
   data: /var/lib/elasticsearch
@@ -87,6 +87,7 @@ STOP
     sed -ie 's/-Xmx1g/-Xmx2g/g' jvm.options
     /etc/default
     tee elasticsearch << STOP
+# Elasticsearch configuration.
 ES_PATH_CONF=/etc/elasticsearch
 ES_STARTUP_SLEEP_TIME=5
 ES_USER=elasticsearch
