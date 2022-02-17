@@ -85,7 +85,7 @@ discovery.seed_hosts: [0.0.0.0]
 STOP
     sed -ie 's/-Xms1g/-Xms2g/g' jvm.options
     sed -ie 's/-Xmx1g/-Xmx2g/g' jvm.options
-    /etc/default
+    cd /etc/default
     tee elasticsearch << STOP
 # Elasticsearch configuration.
 ES_PATH_CONF=/etc/elasticsearch
