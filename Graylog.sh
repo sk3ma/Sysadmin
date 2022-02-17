@@ -9,7 +9,7 @@
 USERID=$(id -u)
 ROOTPASS=$(echo -n P@ssword321 | sha256sum | cut -d" " -f1)
 IPADDR=192.168.33.70
-EMAIL="sk3ma87@gmail.com"
+EMAIL="levon@locstat.co.za"
 
 # Sanity checking.
 if [[ ${USERID} -ne "0" ]]; then
@@ -77,7 +77,7 @@ cluster:
   name: graylog
 network:
   host: 0.0.0.0
-#  bind_host: 127.0.0.1
+  bind_host: 127.0.0.1
 http:
   host: 192.168.33.70
   port: 9200
@@ -85,6 +85,21 @@ discovery.seed_hosts: [0.0.0.0]
 STOP
     sed -ie 's/-Xms1g/-Xms2g/g' jvm.options
     sed -ie 's/-Xmx1g/-Xmx2g/g' jvm.options
+    /etc/default
+    tee elasticsearch << STOP
+ES_PATH_CONF=/etc/elasticsearch
+ES_STARTUP_SLEEP_TIME=5
+ES_USER=elasticsearch
+ES_GROUP=elasticsearch
+LOG_DIR=/var/log/elasticsearch
+DATA_DIR=/var/lib/elasticsearch
+WORK_DIR=/tmp/elasticsearch
+CONF_DIR=/etc/elasticsearch
+CONF_FILE=/etc/elasticsearch/elasticsearch.yml
+RESTART_ON_UPGRADE=true
+START_DAEMON=true
+STOP
+    chown -R elasticsearch:elasticsearch /var/lib/elasticsearch/
     systemctl restart elasticsearch
 }
 
