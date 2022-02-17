@@ -59,7 +59,7 @@ STOP
 elastic() {
     echo -e "\e[1;3mAdding repository\e[m"
     wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | apt-key add -
-    echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | tee –a /etc/apt/sources.list.d/elastic-6.x.list
+    echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | tee /etc/apt/sources.list.d/elastic-6.x.list
     echo -e "\e[1;3mInstalling Elasticsearch\e[m"
     apt update
     apt install elasticsearch -qy
