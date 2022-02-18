@@ -68,9 +68,7 @@ service() {
     systemctl enable jenkins
     echo -e "\e[1;3mRevealing password\e[m"
     cat /var/lib/jenkins/secrets/initialAdminPassword
-#    echo -e "\e[1;3;5mExecuting Ansible script...\e[m"
-#    source /vagrant/Ansible.sh
-     echo -e "\e[1;3;5mConfigure Jenkins webUI...\e[m"
+    echo -e "\e[1;3;5mConfigure Jenkins webUI...\e[m"
     exit
 }
 
