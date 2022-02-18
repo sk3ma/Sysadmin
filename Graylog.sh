@@ -79,7 +79,7 @@ network:
   host: 0.0.0.0
   bind_host: 127.0.0.1
 http:
-  host: 192.168.33.70
+  host: ${IPADDR}
   port: 9200
 discovery.seed_hosts: [0.0.0.0]
 STOP
@@ -177,7 +177,7 @@ firewall() {
     echo "y" | ufw enable
     ufw reload
     echo -e "\e[1;3mTesting Elasticsearch\e[m"
-    curl -X GET "http://192.168.33.70:9200"
+    curl -X GET "http://${IPADDR}:9200"
     echo -e "\e[1;3;5mFinished, configure Graylog server...\e[m"
     exit
 }
