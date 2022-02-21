@@ -9,6 +9,8 @@
 USERID=$(id -u)
 ROOTPASS=$(echo -n P@ssword321 | sha256sum | cut -d" " -f1)
 IPADDR=192.168.33.70
+EPORT=9200
+GPORT=9000
 EMAIL="sk3ma87@gmail.com"
 
 # Sanity checking.
@@ -69,7 +71,8 @@ elastic() {
     rm -f elasticsearch.yml
     tee elasticsearch.yml << STOP
 # Custom configuration.
-node.name: "Elasticsearch"
+node:
+  name: "Elasticsearch"
 path:
   data: /var/lib/elasticsearch
   logs: /var/log/elasticsearch
@@ -80,8 +83,9 @@ network:
   bind_host: 127.0.0.1
 http:
   host: ${IPADDR}
-  port: 9200
-discovery.seed_hosts: [0.0.0.0]
+  port: ${EPORT}
+discovery:
+  seed_hosts: [0.0.0.0]
 STOP
     sed -ie 's/-Xms1g/-Xms2g/g' jvm.options
     sed -ie 's/-Xmx1g/-Xmx2g/g' jvm.options
@@ -146,7 +150,7 @@ elasticsearch_index_prefix = graylog
 allow_leading_wildcard_searches = false
 allow_highlighting = false
 elasticsearch_analyzer = standard
-http_bind_address = ${IPADDR}:9000
+http_bind_address = ${IPADDR}:${GPORT}
 output_batch_size = 500
 output_flush_interval = 1
 output_fault_count_threshold = 5
@@ -177,7 +181,7 @@ firewall() {
     echo "y" | ufw enable
     ufw reload
     echo -e "\e[1;3mTesting Elasticsearch\e[m"
-    curl -X GET "http://${IPADDR}:9200"
+    curl -X GET "http://${IPADDR}:${GPORT}"
     echo -e "\e[1;3;5mFinished, configure Graylog server...\e[m"
     exit
 }
