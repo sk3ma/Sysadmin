@@ -5,8 +5,9 @@
 # The script installs LAMP, Mediawiki, creates a database and wiki page.  #
 ###########################################################################
 
-# Declaring variable.
+# Declaring variables.
 USERID=$(id -u)
+DISTRO=$(lsb_release -ds)
 
 # Sanity checking.
 if [[ "${USERID}" -ne "0" ]]; then
@@ -16,8 +17,10 @@ fi
 
 # Apache installation.
 apache() {
-    echo -e "\e[1;3mInstalling Apache\e[m"
+    echo -e "\e[1;3;5mDistribution: ${DISTRO}\e[m"
+    echo -e "\e[1;3mUpdating system\e[m"
     apt update
+    echo -e "\e[1;3mInstalling Apache\e[m"
     apt install apache2 apache2-{utils,doc} openssl libssl-{dev,doc} -qy
     cd /var/www/html
     echo "<h1>Apache is operational</h1>" > index.html
