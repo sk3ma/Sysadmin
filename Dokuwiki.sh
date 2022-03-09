@@ -18,7 +18,7 @@ fi
 
 # Apache installation.
 apache() {
-    echo -e "\e[1;3;5mDistribution: ${DISTRO}\e[m"
+    echo -e "\e[1;3mDistribution: ${DISTRO}\e[m"
     echo -e "\e[1;3mInstalling Apache\e[m"
     sudo apt update
     sudo apt install apache2 apache2-{doc,utils} software-properties-common vim -qy
@@ -57,7 +57,7 @@ website() {
     echo -e "\e[1;3mCreating virtualhost\e[m"
     tee /etc/apache2/sites-available/dokuwiki.conf << STOP
 <VirtualHost *:80>
-        ServerName wiki.locstat.co.za
+        ServerName wiki.mycompany.com
         DocumentRoot /var/www/html/dokuwiki
 
         <Directory ~ "/var/www/html/dokuwiki/(bin/|conf/|data/|inc/)">
@@ -88,30 +88,6 @@ cert() {
     exit
 }
 
-# Docker installation.
-# docker() {
-#    echo -e "\e[1;3mInstalling Docker\e[m"
-#    apt install apt-transport-https ca-certificates software-properties-common curl -qy
-#    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-#    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable" -y
-#    apt install docker-ce docker-ce-cli containerd.io -qy
-#    usermod -aG docker ${USER}
-#    systemctl start docker
-#    systemctl enable docker
-#}
-
-# Portainer agent.
-# agent() {
-#    echo -e "\e[1;3mDownloading agent\e[m"
-#    docker pull portainer/portainer/agent:latest
-#    docker run -d  \
-#    -p ${IPADDR}:9001:9001 \
-#    --name portainer_agent \
-#    --restart=always \
-#    -v /var/run/docker.sock:/var/run/docker.sock \
-#    -v /var/lib/docker/volumes:/var/lib/docker/volumes portainer/agent:latest
-#}
-
 # Calling functions.
 if [[ -f /etc/lsb-release ]]; then
     echo -e "\e[1;3;5mUbuntu detected, proceeding...\e[m"
@@ -121,6 +97,4 @@ if [[ -f /etc/lsb-release ]]; then
     wiki
     website
     cert
-#    docker
-#    agent
 fi
