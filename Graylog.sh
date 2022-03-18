@@ -12,7 +12,7 @@ ROOTPASS=$(echo -n P@ssword321 | sha256sum | cut -d" " -f1)
 IPADDR=192.168.33.70
 EPORT=9200
 GPORT=9000
-EMAIL="levon@locstat.co.za"
+EMAIL="sk3ma87@gmail.com"
 
 # Sanity checking.
 if [[ ${USERID} -ne "0" ]]; then
