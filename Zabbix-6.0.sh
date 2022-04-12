@@ -2,7 +2,7 @@
 
 ######################################################################
 # This script will automate a Zabbix installation on Ubuntu 20.04.   #
-# The script installs the LAMP stack and download Zabbix server 6.0. #
+# The script installs the LAMP stack and downloads Zabbix server 6.  #
 ######################################################################
 
 # Declaring variables.
