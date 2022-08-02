@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ############################################################################
-# This script will automate a Zabbix agent 2 installation on Ubuntu 18.04. #
+# This script will automate a Zabbix agent 2 installation on Ubuntu 20.04. #
 # The script will configure the Zabbix agent 2 with custom configuration.  #
 ############################################################################
 
