@@ -9,7 +9,7 @@
 USERID=$(id -u)
 DISTRO=$(lsb_release -ds)
 DATE=$(date +%F)
-ZABSRV=zabbix.mycompany,172.31.28.99
+ZABSRV=zabbix.mycompany.com,172.31.28.99
 ZABIPA=13.248.45.67
 AGENAME=Ubuntu_node1
 AGEPORT=10050
