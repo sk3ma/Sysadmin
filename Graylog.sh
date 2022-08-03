@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ##############################################################################
-# The purpose of the script is to automate a Jenkins installation on Ubuntu. #    
+# The purpose of the script is to automate a Graylog installation on Ubuntu. #
 # The script installs Java 8, Elasticsearch, MongoDB and Graylog server.     #
 ##############################################################################
 
@@ -9,10 +9,10 @@
 DISTRO=$(lsb_release -ds)
 USERID=$(id -u)
 ROOTPASS=$(echo -n P@ssword321 | sha256sum | cut -d" " -f1)
-IPADDR=192.168.33.70
+IPADDR=192.168.56.80
+EMAIL="sk3ma87@gmail.com"
 EPORT=9200
 GPORT=9000
-EMAIL="sk3ma87@gmail.com"
 
 # Sanity checking.
 if [[ ${USERID} -ne "0" ]]; then
@@ -23,7 +23,7 @@ fi
 # Java installation.
 java() {
     echo -e "\e[96;1;3mDistribution: ${DISTRO}\e[m"
-    echo -e "\e[32;1;3mUpdating system\e[m"
+    echo -e "\e[32;1;3mUpdating repositories\e[m"
     apt update
     echo -e "\e[32;1;3mInstalling Java\e[m"
     apt install openjdk-8-jdk -qy
@@ -41,21 +41,20 @@ mongodb() {
 # Service file.
 unit() {
     echo -e "\e[32;1;3mCreating service\e[m"
-    cd /etc/systemd/system/
-    tee mongodb.service << STOP
+    local unit=$(cat << STOP
 [Unit]
 Description=High-performance, schema-free document-oriented >database
 After=network.target
-
 [Service]
 User=mongodb
 ExecStart=/usr/bin/mongod --quiet --config /etc/mongod.conf
-
 [Install]
 WantedBy=multi-user.target
 STOP
-    echo -e "\e[32;1;3mStarting MongoDB\e[m"
+)
+    echo "${unit}" > /etc/systemd/system/mongodb.service
     systemctl daemon-reload
+    echo -e "\e[32;1;3mStarting MongoDB\e[m"
     systemctl enable --now mongodb
     systemctl start mongodb
 }
@@ -66,13 +65,11 @@ elastic() {
     wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | apt-key add -
     echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | tee /etc/apt/sources.list.d/elastic-6.x.list
     echo -e "\e[32;1;3mInstalling Elasticsearch\e[m"
-    apt update
-    apt install elasticsearch -qy
+    apt update && apt install elasticsearch -qy
     echo -e "\e[32;1;3mConfiguring Elasticsearch\e[m"
-    cd /etc/elasticsearch
-    cp -v elasticsearch.{yml,orig}
-    rm -f elasticsearch.yml
-    tee elasticsearch.yml << STOP
+    cp -v /etc/elasticsearch/elasticsearch.{yml,orig}
+    rm -f /etc/elasticsearch/elasticsearch.yml
+    local elastic=$(cat << STOP
 # Custom configuration.
 node:
   name: "Elasticsearch"
@@ -90,10 +87,11 @@ http:
 discovery:
   seed_hosts: [0.0.0.0]
 STOP
+)
+    echo "${elastic}" > /etc/elasticsearch/elasticsearch.yml
     sed -ie 's/-Xms1g/-Xms2g/g' jvm.options
     sed -ie 's/-Xmx1g/-Xmx2g/g' jvm.options
-    cd /etc/default
-    tee elasticsearch << STOP
+    local config=$(cat << STOP
 # Elasticsearch configuration.
 ES_PATH_CONF=/etc/elasticsearch
 ES_STARTUP_SLEEP_TIME=5
@@ -107,6 +105,8 @@ CONF_FILE=/etc/elasticsearch/elasticsearch.yml
 RESTART_ON_UPGRADE=true
 START_DAEMON=true
 STOP
+)
+    echo "${config}" > /etc/default/elasticsearch
     chown -R elasticsearch:elasticsearch /var/lib/elasticsearch/
     systemctl restart elasticsearch
 }
