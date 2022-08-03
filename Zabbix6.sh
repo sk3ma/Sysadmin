@@ -54,8 +54,7 @@ mariadb() {
     bash mariadb_repo_setup --mariadb-server-version=10.6
     apt update
     apt install mariadb-server-10.6 mariadb-client-10.6 mariadb-common -qy
-    systemctl start mariadb
-    systemctl enable mariadb
+    systemctl start mariadb && systemctl enable mariadb
     rm -f mariadb_repo_setup
 }
 
@@ -104,8 +103,7 @@ deb-src [arch=amd64] http://repo.zabbix.com/zabbix/6.0/ubuntu focal main
 STOP
 )
     echo "${list}" > /etc/apt/sources.list.d/zabbix.list
-    apt update
-    apt install zabbix-agent zabbix-server-mysql php-mysql zabbix-frontend-php zabbix-sql-scripts zabbix-apache-conf -qy
+    apt update && apt install zabbix-agent zabbix-server-mysql php-mysql zabbix-frontend-php zabbix-sql-scripts zabbix-apache-conf -qy
     systemctl start zabbix-server zabbix-agent
     systemctl enable zabbix-server zabbix-agent
     rm -f zabbix-release_6.0-3+ubuntu20.04_all.deb
