@@ -63,7 +63,7 @@ database() {
     echo -e "\e[32;1;3mConfiguring MariaDB\e[m"
     local dbase=$(cat << STOP
 CREATE DATABASE zabbix_db character set utf8 collate utf8_bin;
-CREATE USER 'zabbix_user'@'%' IDENTIFIED by 'y5VgWsOK';
+CREATE USER 'zabbix_user'@'%' IDENTIFIED by '2K9qT8Zb';
 GRANT ALL PRIVILEGES ON zabbix_db.* TO 'zabbix_user'@'%';
 STOP
 )
