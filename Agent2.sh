@@ -40,8 +40,7 @@ STOP
 )
     echo "${source}" > zabbix.list
     echo -e "\e[32;1;3mInstalling agent\e[m"
-    apt update
-    apt install zabbix-agent2 -y
+    apt update && apt install zabbix-agent2 -y
     rm -f zabbix-release_${version}_all.deb
 }
  
@@ -51,6 +50,7 @@ config() {
     cd /etc/zabbix/
     cp -v zabbix_agent2.conf zabbix_agent2.orig-${DATE}
     tee zabbix_agent2.conf << STOP
+# Custom agent configuration.
 ListenPort=${AGEPORT}
 Server=${ZABSRV}
 ServerActive=${ZABSRV}
@@ -73,8 +73,7 @@ STOP
 # Creating exception.
 firewall() {
     echo -e "\e[32;1;3mAltering firewall\e[m"
-    ufw allow 80/tcp
-    ufw allow 443/tcp
+    ufw allow 80,443/tcp
     ufw allow 10050/tcp
     ufw allow from ${ZABIPA} to any port ${AGEPORT}
     echo "y" | ufw enable 
