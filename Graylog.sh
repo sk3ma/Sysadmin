@@ -89,8 +89,8 @@ discovery:
 STOP
 )
     echo "${elastic}" > /etc/elasticsearch/elasticsearch.yml
-    sed -ie 's/-Xms1g/-Xms2g/g' jvm.options
-    sed -ie 's/-Xmx1g/-Xmx2g/g' jvm.options
+    sed -ie 's/-Xms1g/-Xms2g/g' /etc/elasticsearch/jvm.options
+    sed -ie 's/-Xmx1g/-Xmx2g/g' /etc/elasticsearch/jvm.options
     local config=$(cat << STOP
 # Elasticsearch configuration.
 ES_PATH_CONF=/etc/elasticsearch
