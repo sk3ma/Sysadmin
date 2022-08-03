@@ -117,8 +117,7 @@ graylog() {
     cd /opt
     wget --progress=bar:force https://packages.graylog2.org/repo/packages/graylog-4.2-repository_latest.deb
     dpkg -i graylog-4.2-repository_latest.deb
-    apt update
-    apt install graylog-server pwgen -qy
+    apt update && apt install graylog-server pwgen -qy
     rm -f graylog-4.2-repository_latest.deb
     echo -e "\e[1;3mStarting Graylog\e[m"
     systemctl start graylog-server
