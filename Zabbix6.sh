@@ -118,6 +118,7 @@ config() {
     cp zabbix_server.conf zabbix_zabbix_server.orig-${DATE}
     rm -f zabbix_server.conf
     tee zabbix_server.conf << STOP
+# Custom server configuration.
 ListenPort=${PORT}
 LogFile=${ZLOG}
 LogFileSize=0
