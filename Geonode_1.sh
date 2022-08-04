@@ -5,8 +5,12 @@
 # It will install Docker, Geonode, and create the containers. #
 ###############################################################
 
+# Declaring variable.
+DISTRO=$(lsb_release -ds)
+
 # System preparation.
 system() {
+    echo -e "\e[96;1;3mDistribution: ${DISTRO}\e[m"
     echo -e "\e[32;1;3mUpdating repositories\e[m"
     sudo apt update
     echo -e "\e[32;1;3mInstalling packages\e[m"
@@ -25,30 +29,26 @@ install() {
     sudo apt install docker-ce docker-ce-cli docker-compose containerd.io -qy
     sudo apt autoremove --purge
     echo -e "\e[32;1;3mStarting service\e[m"
-    sudo systemctl start docker
-    sudo systemctl enable docker
+    sudo systemctl start docker && sudo systemctl enable docker
     sudo usermod -aG docker ${USER}
-    chmod a=rw /var/run/docker.sock
+    sudo chmod a=rw /var/run/docker.sock
 }
 
-# Geonode installation.
-geonode() {
+# Directory creation.
+directory() {
     echo -e "\e[32;1;3mCreating directory\e[m"
+    cd /opt
     sudo mkdir -vp /opt/geonode/
     echo -e "\e[32;1;3mAltering permissions\e[m"
     sudo usermod -aG www-data ${USER}
     sudo chown -Rfv ${USER}:www-data /opt/geonode/
     sudo chmod -Rfv 775 /opt/geonode/
-    cd /opt
-    echo -e "\e[32;1;3mDownloading Geonode\e[m"
-    git clone https://github.com/GeoNode/geonode.git -b 3.2.x /opt/geonode
-    cd /opt/geonode
-    echo -e "\e[32;1;3mCreating containers\e[m"
-    docker-compose -f docker-compose.yml pull
-    docker-compose -f docker-compose.yml up -d
-    echo -e "\e[32;1;3mShowing containers\e[m"
-    docker-compose ps
-    exit
+}
+
+# Script execution.
+script() {
+    echo -e "\e[33;1;3;5mExecuting second script...\e[m"
+    source /vagrant/Geonode_2.sh
 }
 
 # Calling functions.
@@ -56,5 +56,6 @@ if [[ -f /etc/lsb-release ]]; then
     echo -e "\e[35;1;3;5mUbuntu detected, proceeding...\e[m"
     system
     install
-    geonode
+    directory
+    script
 fi
