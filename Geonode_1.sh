@@ -14,7 +14,6 @@ system() {
     echo -e "\e[96;1;3mDistribution: ${DISTRO}\e[m"
     echo -e "\e[32;1;3mUpdating repositories\e[m"
     sudo add-apt-repository ppa:ubuntugis/ppa -y
-    sudo apt update
     echo -e "\e[32;1;3mInstalling packages\e[m"
     sudo apt install software-properties-common -qy
     sudo add-apt-repository universe -y
