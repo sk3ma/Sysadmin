@@ -2,7 +2,7 @@
 
 ######################################################################
 # This script will automate a Geonode installation on Ubuntu 20.04.  #
-# Part two will install Geonode, the containers, and the environment #
+# Part two will prepare Geonode, the containers, and the environment #
 ######################################################################
 
 # Declaring variable.
