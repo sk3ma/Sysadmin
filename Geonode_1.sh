@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-###############################################################
-# This script will automate a Geonode installation on Ubuntu. #
-# It will install Docker, Geonode, and create the containers. #
-###############################################################
+####################################################################
+# This script will automate a Geonode installation on Ubuntu 20.04.#
+# Part one will install Docker and create the Geonode directory.   #
+####################################################################
 
 # Declaring variables.
 DISTRO=$(lsb_release -ds)
@@ -49,7 +49,7 @@ directory() {
 # Script execution.
 script() {
     echo -e "\e[33;1;3;5mExecuting second script...\e[m"
-    source /srv/scripts/Geonode_2.sh
+    source /vagrant/Geonode_2.sh
 }
 
 # Calling functions.
