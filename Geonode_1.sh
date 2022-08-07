@@ -49,7 +49,7 @@ directory() {
 # Script execution.
 script() {
     echo -e "\e[33;1;3;5mExecuting second script...\e[m"
-    source /vagrant/Geonode_2.sh
+    source /srv/scripts/Geonode_2.sh
 }
 
 # Calling functions.
