@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 
-###############################################################
-# This script will automate a Geonode installation on Ubuntu. #
-# It will install Docker, Geonode, and create the containers. #
-###############################################################
+######################################################################
+# This script will automate a Geonode installation on Ubuntu 20.04.  #
+# Part two will install Geonode, the containers, and the environment #
+######################################################################
+
+# Declaring variable.
+IPADDR=192.168.56.80
 
 # Geonode installation.
 geonode() {
@@ -18,10 +21,10 @@ geonode() {
 # Configuring environment.
 environment() {
     echo -e "\e[32;1;3mUpdating configuration\e[m"
-    sudo sed -i 's|SITEURL=http://localhost/|SITEURL=http://192.168.56.80/|g' .env
-    sudo sed -i 's|GEOSERVER_WEB_UI_LOCATION=http://localhost/geoserver/|GEOSERVER_WEB_UI_LOCATION=http://192.168.56.80/geoserver/|g' .env
-    sudo sed -i 's|GEOSERVER_PUBLIC_LOCATION=http://localhost/geoserver/|GEOSERVER_PUBLIC_LOCATION=http://192.168.56.80/geoserver/|g' .env
-    sudo sed -i 's|GEONODE_LB_HOST_IP=localhost|GEONODE_LB_HOST_IP=192.168.56.80|g' .env
+    sudo sed -i 's|SITEURL=http://localhost/|SITEURL=http://${IPADDR}/|g' .env
+    sudo sed -i 's|GEOSERVER_WEB_UI_LOCATION=http://localhost/geoserver/|GEOSERVER_WEB_UI_LOCATION=http://${IPADDR}/geoserver/|g' .env
+    sudo sed -i 's|GEOSERVER_PUBLIC_LOCATION=http://localhost/geoserver/|GEOSERVER_PUBLIC_LOCATION=http://${IPADDR}/geoserver/|g' .env
+    sudo sed -i 's|GEONODE_LB_HOST_IP=localhost|GEONODE_LB_HOST_IP=${IPADDR}|g' .env
     echo -e "\e[32;1;3mRestarting containers\e[m"
     docker-compose up -d
     echo -e "\e[32;1;3mShowing containers\e[m"
