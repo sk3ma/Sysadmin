@@ -5,7 +5,7 @@
 # It will install Docker, Geonode, and create the containers. #
 ###############################################################
 
-# Declaring variable.
+# Declaring variables.
 DISTRO=$(lsb_release -ds)
 VERSION=$(lsb_release -cs)
 
@@ -25,7 +25,7 @@ system() {
 install() {
     echo -e "\e[32;1;3mAdding repository\e[m"
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu ${VERSION} stable"
+    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu ${VERSION} stable" -y
     echo -e "\e[32;1;3mInstalling Docker\e[m"
     sudo apt install docker-ce docker-ce-cli docker-compose containerd.io -qy
     sudo apt autoremove --purge
@@ -49,7 +49,7 @@ directory() {
 # Script execution.
 script() {
     echo -e "\e[33;1;3;5mExecuting second script...\e[m"
-    source /vagrant/Geonode_2.sh
+    source /srv/scripts/Geonode_2.sh
 }
 
 # Calling functions.
