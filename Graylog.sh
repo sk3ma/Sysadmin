@@ -30,7 +30,7 @@ java() {
 }
 
 # MongoDB installation.
-mongodb() {
+mongo() {
     echo -e "\e[32;1;3mInstalling MongoDB\e[m"
     apt install apt-transport-https ca-certificates dirmngr gnupg software-properties-common -qy
     wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | apt-key add -
@@ -212,9 +212,9 @@ firewall() {
 if [[ -f /etc/lsb-release ]]; then
     echo -e "\e[33;1;3;5mUbuntu detected, proceeding...\e[m"
     java
-    elastic
-    mongodb
+    mongo
     unit
+    elastic
     graylog
     config
     syslog
