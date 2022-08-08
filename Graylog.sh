@@ -80,8 +80,6 @@ path:
   logs: /var/log/elasticsearch
 cluster:
   name: graylog
-action:
-  auto_create: false
 network:
   host: 0.0.0.0
   bind_host: 127.0.0.1
