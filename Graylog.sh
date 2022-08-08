@@ -43,11 +43,13 @@ unit() {
     echo -e "\e[32;1;3mCreating service\e[m"
     local unit=$(cat << STOP
 [Unit]
-Description=High-performance, schema-free document-oriented >database
+Description=MongoDB database server
 After=network.target
 [Service]
 User=mongodb
+Group=mongodb
 ExecStart=/usr/bin/mongod --quiet --config /etc/mongod.conf
+PIDFile=/var/run/mongodb/mongod.pid
 [Install]
 WantedBy=multi-user.target
 STOP
