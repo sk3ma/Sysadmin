@@ -182,10 +182,10 @@ STOP
 # Syslog configuration.
 syslog() {
     echo -e "\e[32;1;3mConfiguring Syslog\e[m"
-    echo -e "module(load="imudp")" >> /etc/rsyslog.conf
-    echo -e "input(type="imudp" port="514")" >> /etc/rsyslog.conf
-    echo -e "module(load="imtcp")" >> /etc/rsyslog.conf
-    echo -e "input(type="imtcp" port="514")" >> /etc/rsyslog.conf
+    echo -e 'module(load="imudp")' >> /etc/rsyslog.conf
+    echo -e 'input(type="imudp" port="514")' >> /etc/rsyslog.conf
+    echo -e 'module(load="imtcp")' >> /etc/rsyslog.conf
+    echo -e 'input(type="imtcp" port="514")' >> /etc/rsyslog.conf
     echo -e "*.*@127.0.0.1:5140" >> /etc/rsyslog.conf
     echo -e "\e[32;1;3mRestarting Syslog\e[m"
     systemctl restart rsyslog
