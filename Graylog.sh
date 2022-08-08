@@ -26,7 +26,7 @@ java() {
     echo -e "\e[32;1;3mUpdating repositories\e[m"
     apt update
     echo -e "\e[32;1;3mInstalling Java\e[m"
-    apt install openjdk-8-jdk -qy
+    apt install openjdk-11-jdk openjdk-11-jre uuid-runtime -qy
 }
 
 # MongoDB installation.
@@ -63,9 +63,9 @@ STOP
 elastic() {
     echo -e "\e[32;1;3mAdding repository\e[m"
     wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | apt-key add -
-    echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | tee /etc/apt/sources.list.d/elastic-6.x.list
+    echo "deb https://artifacts.elastic.co/packages/oss-7.x/apt stable main" | tee /etc/apt/sources.list.d/elastic-7.x.list
     echo -e "\e[32;1;3mInstalling Elasticsearch\e[m"
-    apt update && apt install elasticsearch -qy
+    apt update && apt install elasticsearch-oss -qy
     echo -e "\e[32;1;3mConfiguring Elasticsearch\e[m"
     cp -v /etc/elasticsearch/elasticsearch.{yml,orig}
     rm -f /etc/elasticsearch/elasticsearch.yml
@@ -78,6 +78,8 @@ path:
   logs: /var/log/elasticsearch
 cluster:
   name: graylog
+action:
+  auto_create: false
 network:
   host: 0.0.0.0
   bind_host: 127.0.0.1
@@ -177,6 +179,18 @@ STOP
     systemctl restart graylog-server
 }
 
+# Syslog configuration.
+syslog() {
+    echo -e "\e[32;1;3mConfiguring Syslog\e[m"
+    echo -e "module(load="imudp")" >> /etc/rsyslog.conf
+    echo -e "input(type="imudp" port="514")" >> /etc/rsyslog.conf
+    echo -e "module(load="imtcp")" >> /etc/rsyslog.conf
+    echo -e "input(type="imtcp" port="514")" >> /etc/rsyslog.conf
+    echo -e "*.*@127.0.0.1:5140" >> /etc/rsyslog.conf
+    echo -e "\e[32;1;3mRestarting Syslog\e[m"
+    systemctl restart rsyslog
+}
+
 # Creating exception.
 firewall() {
     echo -e "\e[32;1;3mAdjusting firewall\e[m"
@@ -199,5 +213,6 @@ if [[ -f /etc/lsb-release ]]; then
     unit
     graylog
     config
+    syslog
     firewall
 fi
