@@ -91,8 +91,10 @@ discovery:
 STOP
 )
     echo "${elastic}" > /etc/elasticsearch/elasticsearch.yml
+    echo -e "\e[32;1;3mResizing Heap\e[m"
     sed -i 's|-Xms1g|-Xms2g|g' /etc/elasticsearch/jvm.options
     sed -i 's|-Xmx1g|-Xmx2g|g' /etc/elasticsearch/jvm.options
+    echo -e "\e[32;1;3mElasticsearch options\e[m"
     local config=$(cat << STOP
 # Elasticsearch configuration.
 ES_PATH_CONF=/etc/elasticsearch
