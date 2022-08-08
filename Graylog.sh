@@ -9,7 +9,7 @@
 DISTRO=$(lsb_release -ds)
 USERID=$(id -u)
 ROOTPASS=$(echo -n P@ssword321 | sha256sum | cut -d" " -f1)
-IPADDR=192.168.56.80
+IPADDR=192.168.56.75
 EMAIL="sk3ma87@gmail.com"
 EPORT=9200
 GPORT=9000
@@ -89,8 +89,8 @@ discovery:
 STOP
 )
     echo "${elastic}" > /etc/elasticsearch/elasticsearch.yml
-    sed -ie 's/-Xms1g/-Xms2g/g' /etc/elasticsearch/jvm.options
-    sed -ie 's/-Xmx1g/-Xmx2g/g' /etc/elasticsearch/jvm.options
+    sed -i 's/-Xms1g/-Xms2g/g' /etc/elasticsearch/jvm.options
+    sed -i 's/-Xmx1g/-Xmx2g/g' /etc/elasticsearch/jvm.options
     local config=$(cat << STOP
 # Elasticsearch configuration.
 ES_PATH_CONF=/etc/elasticsearch
@@ -107,7 +107,7 @@ START_DAEMON=true
 STOP
 )
     echo "${config}" > /etc/default/elasticsearch
-    chown -R elasticsearch:elasticsearch /var/lib/elasticsearch/
+    chown -vR elasticsearch:elasticsearch /var/lib/elasticsearch/
     systemctl restart elasticsearch
 }
 
@@ -118,10 +118,10 @@ graylog() {
     wget --progress=bar:force https://packages.graylog2.org/repo/packages/graylog-4.2-repository_latest.deb
     dpkg -i graylog-4.2-repository_latest.deb
     apt update && apt install graylog-server pwgen -qy
-    rm -f graylog-4.2-repository_latest.deb
-    echo -e "\e[1;3mStarting Graylog\e[m"
+    echo -e "\e[32;1;3mStarting Graylog\e[m"
     systemctl start graylog-server
     systemctl enable graylog-server
+    rm -f graylog-4.2-repository_latest.deb
 }
 
 # Graylog configuration.
@@ -172,6 +172,7 @@ mongodb_max_connections = 1000
 mongodb_threads_allowed_to_block_multiplier = 5
 proxied_requests_thread_pool_size = 32
 STOP
+    echo -e "\e[32;1;3mRestarting Graylog\e[m"
     systemctl restart graylog-server
 }
 
