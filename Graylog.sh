@@ -2,7 +2,7 @@
 
 ##############################################################################
 # The purpose of the script is to automate a Graylog installation on Ubuntu. #
-# The script installs Java 8, Elasticsearch, MongoDB and Graylog server.     #
+# The script installs Java 11, Elasticsearch, MongoDB and Graylog server.    #
 ##############################################################################
 
 # Declaring variables.
@@ -81,13 +81,13 @@ path:
 cluster:
   name: graylog
 network:
-  host: 0.0.0.0
+  host: ${IPADDR}
   bind_host: 127.0.0.1
 http:
-  host: ${IPADDR}
   port: ${EPORT}
 discovery:
   seed_hosts: [0.0.0.0]
+action.auto_create_index: false
 STOP
 )
     echo "${elastic}" > /etc/elasticsearch/elasticsearch.yml
@@ -111,7 +111,7 @@ START_DAEMON=true
 STOP
 )
     echo "${config}" > /etc/default/elasticsearch
-    chown -vR elasticsearch:elasticsearch /var/lib/elasticsearch/
+    chown -R elasticsearch:elasticsearch /var/lib/elasticsearch/
     echo -e "\e[32;1;3mRestarting Elasticsearch\e[m"
     systemctl restart elasticsearch
 }
