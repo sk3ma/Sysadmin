@@ -89,8 +89,8 @@ discovery:
 STOP
 )
     echo "${elastic}" > /etc/elasticsearch/elasticsearch.yml
-    sed -i 's/-Xms1g/-Xms2g/g' /etc/elasticsearch/jvm.options
-    sed -i 's/-Xmx1g/-Xmx2g/g' /etc/elasticsearch/jvm.options
+    sed -i 's|-Xms1g|-Xms2g|g' /etc/elasticsearch/jvm.options
+    sed -i 's|-Xmx1g|-Xmx2g|g' /etc/elasticsearch/jvm.options
     local config=$(cat << STOP
 # Elasticsearch configuration.
 ES_PATH_CONF=/etc/elasticsearch
@@ -108,6 +108,7 @@ STOP
 )
     echo "${config}" > /etc/default/elasticsearch
     chown -vR elasticsearch:elasticsearch /var/lib/elasticsearch/
+    echo -e "\e[32;1;3mRestarting Elasticsearch\e[m"
     systemctl restart elasticsearch
 }
 
