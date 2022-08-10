@@ -18,12 +18,12 @@ geonode() {
 # Configuring environment.
 environment() {
     echo -e "\e[32;1;3mUpdating configuration\e[m"
-    sudo sed -i 's|HTTP_HOST=localhost|HTTP_HOST=http://192.168.56.80|g' .env
+    sudo sed -i 's|HTTP_HOST=localhost|HTTP_HOST=192.168.56.80|g' .env
+    sudo sed -i 's|GEONODE_LB_HOST_IP=localhost|GEONODE_LB_HOST_IP=192.168.56.80|g' .env
     sudo sed -i 's|SITEURL=http://localhost/|SITEURL=http://192.168.56.80/|g' .env
     sudo sed -i 's|GEOSERVER_WEB_UI_LOCATION=http://localhost/geoserver/|GEOSERVER_WEB_UI_LOCATION=http://192.168.56.80/geoserver/|g' .env
     sudo sed -i 's|GEOSERVER_PUBLIC_LOCATION=http://localhost/geoserver/|GEOSERVER_PUBLIC_LOCATION=http://192.168.56.80/geoserver/|g' .env
     sudo sed -i 's|GEOSERVER_PUBLIC_LOCATION=http://localhost/geoserver/|GEOSERVER_PUBLIC_LOCATION=http://192.168.56.80/geoserver/|g' .env
-    sudo sed -i 's|GEONODE_LB_HOST_IP=localhost|GEONODE_LB_HOST_IP=192.168.56.80|g' .env
     echo -e "\e[32;1;3mRestarting containers\e[m"
     docker-compose up -d
     echo -e "\e[32;1;3mShowing containers\e[m"
