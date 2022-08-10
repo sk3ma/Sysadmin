@@ -38,7 +38,6 @@ install() {
 # Directory creation.
 directory() {
     echo -e "\e[32;1;3mCreating directory\e[m"
-    cd /opt
     sudo mkdir -vp /opt/geonode/
     echo -e "\e[32;1;3mAltering permissions\e[m"
     sudo usermod -aG www-data ${USER}
