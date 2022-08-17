@@ -39,6 +39,20 @@ zabpod() {
     -p 3000:3000
 }
 
+# MySQL container.
+sqlcon() {
+    echo -e "\e[32;1;3mCreating MySQL\e[m"
+    podman run --name mysql-server \
+    -t -e MYSQL_DATABASE="zabbix_db" \
+    -e MYSQL_USER="zabbix_user" \
+    -e MYSQL_PASSWORD="zabbix" \
+    -e MYSQL_ROOT_PASSWORD="L0gM31n" \
+    -v /opt/mysql/:/var/lib/mysql/:Z \
+    --restart=always \
+    --pod=zabbix \
+    -d docker.io/library/mysql:8.0 --character-set-server=utf8 --collation-server=utf8_bin --default-authentication-plugin=mysql_native_password
+}
+
 # Zabbix container.
 zabcon() {
     echo -e "\e[32;1;3mCreating Zabbix\e[m"
@@ -52,20 +66,6 @@ zabcon() {
     --restart=always \
     --pod=zabbix \
     -d docker.io/zabbix/zabbix-server-mysql:latest
-}
-
-# MySQL container.
-sqlcon() {
-    echo -e "\e[32;1;3mCreating MySQL\e[m"
-    podman run --name mysql-server \
-    -t -e MYSQL_DATABASE="zabbix_db" \
-    -e MYSQL_USER="zabbix_user" \
-    -e MYSQL_PASSWORD="zabbix" \
-    -e MYSQL_ROOT_PASSWORD="L0gM31n" \
-    -v /opt/mysql/:/var/lib/mysql/:Z \
-    --restart=always \
-    --pod=zabbix \
-    -d docker.io/library/mysql:8.0 --character-set-server=utf8 --collation-server=utf8_bin --default-authentication-plugin=mysql_native_password
 }
 
 # Java container.
@@ -118,8 +118,8 @@ if [[ -f /etc/redhat-release ]]; then
     echo -e "\e[35;1;3;5mCentOS detected, proceeding...\e[m"
     system
     zabpod
-    zabcon
     sqlcon
+    zabcon
     javcon
     webcon
     agecon
