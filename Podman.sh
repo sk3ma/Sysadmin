@@ -73,7 +73,7 @@ agecon() {
     -eZBX_SERVER_HOST="192.168.56.80,127.0.0.1" \
     --restart=always \
     --pod=zabbix \
-    -d zabbix/zabbix-agent2
+    -d docker.io/zabbix/zabbix-agent2:latest
 }
 
 # Java container.
