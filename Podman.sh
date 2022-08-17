@@ -50,7 +50,10 @@ sqlcon() {
    -v /opt/mysql/:/var/lib/mysql/:Z \
     --restart=always \
    --pod=zabbix \
-    -d docker.io/library/mysql:8.0 --character-set-server=utf8 --collation-server=utf8_bin --default-authentication-plugin=mysql_native_password
+    -d docker.io/library/mysql:8.0:latest \
+    --character-set-server=utf8 \
+    --collation-server=utf8_bin \
+    --default-authentication-plugin=mysql_native_password
 }
 
 # Zabbix container.
@@ -64,7 +67,9 @@ zabcon() {
     -e MYSQL_PASSWORD="zabbix" \
     -e MYSQL_ROOT_PASSWORD="L0gM31n" \
     -e ZBX_JAVAGATEWAY="127.0.0.1" \
-    --restart=always --pod=zabbix -d docker.io/zabbix/zabbix-server-mysql
+    --restart=always \
+    --pod=zabbix \
+    -d docker.io/zabbix/zabbix-server-mysql:latest
 }
 
 # Agent container.
@@ -85,7 +90,7 @@ javcon() {
     --name zabbix-java-gateway \
     -t --restart=always \
     --pod=zabbix \
-    -d docker.io/zabbix/zabbix-java-gateway
+    -d docker.io/zabbix/zabbix-java-gateway:latest
 }
 
 # Web container.
@@ -100,7 +105,7 @@ webcon() {
     -e MYSQL_PASSWORD="zabbix" \
     -e MYSQL_ROOT_PASSWORD="L0gM31n" \
     --restart=always --pod=zabbix \
-    -d docker.io/zabbix/zabbix-web-nginx-mysql
+    -d docker.io/zabbix/zabbix-web-nginx-mysql:latest
 }
 
 # Grafana container.
@@ -110,7 +115,7 @@ grafcon() {
     --name grafana \
     --restart=always \
     --pod=zabbix \
-    -d docker.io/grafana/grafana
+    -d docker.io/grafana/grafana:latest
     echo -e "\e[33;1;3;5mFinished, podman installed.\e[m"
     exit
 }
