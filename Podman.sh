@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-###########################################################################
-# This script will automate a Zabbix agent 2 installation on CentOS 8.    #
-# The script will install Podman, create a pod and add containers to it.  #
-###########################################################################
+################################################################################
+# The purpose of this script is to automate a Podman installation on CentOS 8. #
+# The script will install Podman, create a pod, and add containers to the pod. #
+################################################################################
 
 # Declaring variable.
 USERID=$(id -u)
