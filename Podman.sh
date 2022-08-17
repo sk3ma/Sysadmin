@@ -56,7 +56,8 @@ sqlcon() {
 # Zabbix container.
 zabcon() {
     echo -e "\e[32;1;3mCreating Zabbix\e[m"
-    podman run --name zabbix-server-mysql \
+    podman run \
+    --name zabbix-server-mysql \
     -t -e DB_SERVER_HOST="127.0.0.1" \
     -e MYSQL_DATABASE="zabbix_db" \
     -e MYSQL_USER="zabbix_user" \
@@ -69,7 +70,8 @@ zabcon() {
 # Agent container.
 agecon() {
     echo -e "\e[32;1;3mCreating Agent\e[m"
-    podman run --name zabbix-agent \
+    podman run \
+    --name zabbix-agent \
     -eZBX_SERVER_HOST="192.168.56.80,127.0.0.1" \
     --restart=always \
     --pod=zabbix \
@@ -79,7 +81,8 @@ agecon() {
 # Java container.
 javcon() {
     echo -e "\e[32;1;3mCreating Java\e[m"
-    podman run --name zabbix-java-gateway \
+    podman run \
+    --name zabbix-java-gateway \
     -t --restart=always \
     --pod=zabbix \
     -d docker.io/zabbix/zabbix-java-gateway
@@ -88,7 +91,8 @@ javcon() {
 # Web container.
 webcon() {
     echo -e "\e[32;1;3mCreating Web\e[m"
-    podman run --name zabbix-web-mysql \
+    podman run \
+    --name zabbix-web-mysql \
     -t -e ZBX_SERVER_HOST="127.0.0.1" \
     -e DB_SERVER_HOST="127.0.0.1" \
     -e MYSQL_DATABASE="zabbix_db" \
@@ -102,7 +106,8 @@ webcon() {
 # Grafana container.
 grafcon() {
     echo -e "\e[32;1;3mCreating Grafana\e[m"
-    podman run --name grafana \
+    podman run \
+    --name grafana \
     --restart=always \
     --pod=zabbix \
     -d docker.io/grafana/grafana
