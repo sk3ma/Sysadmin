@@ -42,18 +42,15 @@ pod() {
 # MySQL container.
 sqlcon() {
     echo -e "\e[32;1;3mCreating MySQL\e[m"
-    podman run --name mysql-server \
+podman run --name mysql-server \
     -t -e MYSQL_DATABASE="zabbix_db" \
     -e MYSQL_USER="zabbix_user" \
     -e MYSQL_PASSWORD="zabbix" \
     -e MYSQL_ROOT_PASSWORD="L0gM31n" \
-   -v /opt/mysql/:/var/lib/mysql/:Z \
+    -v /opt/mysql/:/var/lib/mysql/:Z \
     --restart=always \
-   --pod=zabbix \
-    -d docker.io/library/mysql:8.0:latest \
-    --character-set-server=utf8 \
-    --collation-server=utf8_bin \
-    --default-authentication-plugin=mysql_native_password
+    --pod=zabbix \
+    -d mysql:8.0:latest --character-set-server=utf8 --collation-server=utf8_bin --default-authentication-plugin=mysql_native_password
 }
 
 # Zabbix container.
@@ -98,8 +95,8 @@ webcon() {
     echo -e "\e[32;1;3mCreating Web\e[m"
     podman run \
     --name zabbix-web-mysql \
-    -t -e ZBX_SERVER_HOST="127.0.0.1" \
-    -e DB_SERVER_HOST="127.0.0.1" \
+    -t -e ZBX_SERVER_HOST="192.168.56.80" \
+    -e DB_SERVER_HOST="192.168.56.80" \
     -e MYSQL_DATABASE="zabbix_db" \
     -e MYSQL_USER="zabbix_user" \
     -e MYSQL_PASSWORD="zabbix" \
