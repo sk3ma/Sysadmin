@@ -57,7 +57,7 @@ zabcon() {
 # MySQL container.
 sqlcon() {
     echo -e "\e[32;1;3mCreating MySQL\e[m"
-     podman run --name mysql-server \
+    podman run --name mysql-server \
     -t -e MYSQL_DATABASE="zabbix_db" \
     -e MYSQL_USER="zabbix_user" \
     -e MYSQL_PASSWORD="zabbix" \
@@ -65,7 +65,7 @@ sqlcon() {
     -v /opt/mysql/:/var/lib/mysql/:Z \
     --restart=always \
     --pod=zabbix \
-    -d docker.io/mysql:8.0:latest --character-set-server=utf8 --collation-server=utf8_bin --default-authentication-plugin=mysql_native_password
+    -d docker.io/library/mysql:8.0 --character-set-server=utf8 --collation-server=utf8_bin --default-authentication-plugin=mysql_native_password
 }
 
 # Java container.
