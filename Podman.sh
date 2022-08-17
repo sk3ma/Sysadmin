@@ -39,6 +39,16 @@ zabpod() {
     -p 3000:3000
 }
 
+# Agent container.
+agecon() {
+    echo -e "\e[32;1;3mCreating Agent\e[m"
+    podman run --name zabbix-agent \
+    -eZBX_SERVER_HOST="192.168.56.81,127.0.0.1" \
+    --restart=always \
+    --pod=zabbix \
+    -d docker.io/zabbix/zabbix-agent2:latest
+}
+
 # MySQL container.
 sqlcon() {
     echo -e "\e[32;1;3mCreating MySQL\e[m"
@@ -82,23 +92,13 @@ webcon() {
     echo -e "\e[32;1;3mCreating Web\e[m"
     podman run --name zabbix-web-mysql \
     -t -e ZBX_SERVER_HOST="192.168.56.81" \
-    -e DB_SERVER_HOST="192.168.56.81" \
+    -e DB_SERVER_HOST="127.0.0.1" \
     -e MYSQL_DATABASE="zabbix_db" \
     -e MYSQL_USER="zabbix_user" \
     -e MYSQL_PASSWORD="zabbix" \
     -e MYSQL_ROOT_PASSWORD="L0gM31n" \
     --restart=always --pod=zabbix \
     -d docker.io/zabbix/zabbix-web-nginx-mysql:latest
-}
-
-# Agent container.
-agecon() {
-    echo -e "\e[32;1;3mCreating Agent\e[m"
-    podman run --name zabbix-agent \
-    -eZBX_SERVER_HOST="192.168.56.81,127.0.0.1" \
-    --restart=always \
-    --pod=zabbix \
-    -d docker.io/zabbix/zabbix-agent2:latest
 }
 
 # Grafana container.
@@ -118,10 +118,10 @@ if [[ -f /etc/redhat-release ]]; then
     echo -e "\e[35;1;3;5mCentOS detected, proceeding...\e[m"
     system
     zabpod
+    agecon
     sqlcon
     zabcon
     javcon
     webcon
-    agecon
     grafcon
 fi
