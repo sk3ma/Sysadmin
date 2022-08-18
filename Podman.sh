@@ -2,10 +2,10 @@
 
 ################################################################################
 # The purpose of this script is to automate a Podman installation on CentOS 8. #
-# The script will install Podman, create a pod, and add containers to the pod. #
+# The script will install Podman, create a Zabbix pod, and create containers.  #
 ################################################################################
 
-# Declaring variable.
+# Declaring variables.
 USERID=$(id -u)
 DISTRO=$(cat /etc/redhat-release)
 
@@ -21,8 +21,10 @@ system() {
     echo -e "\e[32;1;3mPreparing system\e[m"
     sed -i 's|mirrorlist|#mirrorlist|g' /etc/yum.repos.d/CentOS-*
     sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
-    echo -e "\e[32;1;3mUpdatinging system\e[m"
+    echo -e "\e[32;1;3mUpdating system\e[m"
     yum update -y
+    echo -e "\e[32;1;3mUpgrading system\e[m"
+    yum upgrade -y
     echo -e "\e[32;1;3Installing Podman\e[m"
     yum install podman-docker vim -y
     echo -e "\e[32;1;3mCreating directory\e[m"
@@ -36,14 +38,22 @@ zabpod() {
     --name zabbix \
     -p 80:8080 \
     -p 10051:10051 \
-    -p 3000:3000
+#    -p 3000:3000
 }
+
+#fired() {
+#    echo -e "\e[32;1;3mAdjusting firewall\e[m"
+#    firewall-cmd --add-service={http,https} --permanent
+#    firewall-cmd --add-port={3000/tcp,10051/tcp} --permanent
+#    firewall-cmd --reload
+#    firewall-cmd --list-all
+#}
 
 # Agent container.
 agecon() {
     echo -e "\e[32;1;3mCreating Agent\e[m"
     podman run --name zabbix-agent \
-    -eZBX_SERVER_HOST="192.168.56.81,127.0.0.1" \
+    -e ZBX_SERVER_HOST="192.168.56.81,127.0.0.1" \
     --restart=always \
     --pod=zabbix \
     -d docker.io/zabbix/zabbix-agent2:latest
@@ -52,8 +62,8 @@ agecon() {
 # MySQL container.
 sqlcon() {
     echo -e "\e[32;1;3mCreating MySQL\e[m"
-    podman run --name mysql-server \
-    -t -e MYSQL_DATABASE="zabbix_db" \
+    podman run --name mysql-server -t \
+    -e MYSQL_DATABASE="zabbix_db" \
     -e MYSQL_USER="zabbix_user" \
     -e MYSQL_PASSWORD="zabbix" \
     -e MYSQL_ROOT_PASSWORD="L0gM31n" \
@@ -66,8 +76,8 @@ sqlcon() {
 # Zabbix container.
 zabcon() {
     echo -e "\e[32;1;3mCreating Zabbix\e[m"
-    podman run --name zabbix-server-mysql \
-    -t -e DB_SERVER_HOST="127.0.0.1" \
+    podman run --name zabbix-server-mysql -t \
+    -e DB_SERVER_HOST="127.0.0.1" \
     -e MYSQL_DATABASE="zabbix_db" \
     -e MYSQL_USER="zabbix_user" \
     -e MYSQL_PASSWORD="zabbix" \
@@ -81,8 +91,8 @@ zabcon() {
 # Java container.
 javcon() {
     echo -e "\e[32;1;3mCreating Java\e[m"
-    podman run --name zabbix-java-gateway \
-    -t --restart=always \
+    podman run --name zabbix-java-gateway -t \
+    --restart=always \
     --pod=zabbix \
     -d docker.io/zabbix/zabbix-java-gateway:latest
 }
@@ -90,38 +100,40 @@ javcon() {
 # Web container.
 webcon() {
     echo -e "\e[32;1;3mCreating Web\e[m"
-    podman run --name zabbix-web-mysql \
-    -t -e ZBX_SERVER_HOST="192.168.56.81" \
+    podman run --name zabbix-web-mysql -t \
+    -e ZBX_SERVER_HOST="192.168.56.81" \
     -e DB_SERVER_HOST="127.0.0.1" \
     -e MYSQL_DATABASE="zabbix_db" \
     -e MYSQL_USER="zabbix_user" \
     -e MYSQL_PASSWORD="zabbix" \
     -e MYSQL_ROOT_PASSWORD="L0gM31n" \
-    --restart=always --pod=zabbix \
-    -d docker.io/zabbix/zabbix-web-nginx-mysql:latest
-}
-
-# Grafana container.
-grafcon() {
-    echo -e "\e[32;1;3mCreating Grafana\e[m"
-    podman run \
-    --name grafana \
     --restart=always \
     --pod=zabbix \
-    -d docker.io/grafana/grafana:latest
+    -d docker.io/zabbix/zabbix-web-nginx-mysql:latest
     echo -e "\e[33;1;3;5mFinished, podman installed.\e[m"
     exit
 }
+
+# Grafana container.
+#grafcon() {
+#    echo -e "\e[32;1;3mCreating Grafana\e[m"
+#    podman run \
+#    --name grafana \
+#    --restart=always \
+#    --pod=zabbix \
+#    -d docker.io/grafana/grafana:latest
+#}
 
 # Calling functions.
 if [[ -f /etc/redhat-release ]]; then
     echo -e "\e[35;1;3;5mCentOS detected, proceeding...\e[m"
     system
     zabpod
+#    fired
     agecon
     sqlcon
     zabcon
     javcon
     webcon
-    grafcon
+#    grafcon
 fi
