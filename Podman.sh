@@ -37,14 +37,14 @@ zabpod() {
     podman pod create \
     --name zabbix \
     -p 80:8080 \
-    -p 10051:10051 \
-#    -p 3000:3000
+    -p 10050:10050 \
+    -p 10051:10051
 }
 
 #fired() {
 #    echo -e "\e[32;1;3mAdjusting firewall\e[m"
 #    firewall-cmd --add-service={http,https} --permanent
-#    firewall-cmd --add-port={3000/tcp,10051/tcp} --permanent
+#    firewall-cmd --add-port={10050/tcp,10051/tcp} --permanent
 #    firewall-cmd --reload
 #    firewall-cmd --list-all
 #}
@@ -66,7 +66,7 @@ sqlcon() {
     -e MYSQL_DATABASE="zabbix_db" \
     -e MYSQL_USER="zabbix_user" \
     -e MYSQL_PASSWORD="zabbix" \
-    -e MYSQL_ROOT_PASSWORD="L0gM31n" \
+    -e MYSQL_ROOT_PASSWORD="fLV19fIp" \
     -v /opt/mysql/:/var/lib/mysql/:Z \
     --restart=always \
     --pod=zabbix \
@@ -81,7 +81,7 @@ zabcon() {
     -e MYSQL_DATABASE="zabbix_db" \
     -e MYSQL_USER="zabbix_user" \
     -e MYSQL_PASSWORD="zabbix" \
-    -e MYSQL_ROOT_PASSWORD="L0gM31n" \
+    -e MYSQL_ROOT_PASSWORD="fLV19fIp" \
     -e ZBX_JAVAGATEWAY="127.0.0.1" \
     --restart=always \
     --pod=zabbix \
@@ -106,23 +106,13 @@ webcon() {
     -e MYSQL_DATABASE="zabbix_db" \
     -e MYSQL_USER="zabbix_user" \
     -e MYSQL_PASSWORD="zabbix" \
-    -e MYSQL_ROOT_PASSWORD="L0gM31n" \
+    -e MYSQL_ROOT_PASSWORD="fLV19fIp" \
     --restart=always \
     --pod=zabbix \
     -d docker.io/zabbix/zabbix-web-nginx-mysql:latest
     echo -e "\e[33;1;3;5mFinished, podman installed.\e[m"
     exit
 }
-
-# Grafana container.
-#grafcon() {
-#    echo -e "\e[32;1;3mCreating Grafana\e[m"
-#    podman run \
-#    --name grafana \
-#    --restart=always \
-#    --pod=zabbix \
-#    -d docker.io/grafana/grafana:latest
-#}
 
 # Calling functions.
 if [[ -f /etc/redhat-release ]]; then
@@ -135,5 +125,4 @@ if [[ -f /etc/redhat-release ]]; then
     zabcon
     javcon
     webcon
-#    grafcon
 fi
