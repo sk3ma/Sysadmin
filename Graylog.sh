@@ -77,7 +77,7 @@ server() {
     wget --progress=bar:force https://packages.graylog2.org/repo/packages/graylog-4.3-repository_latest.deb
     dpkg -i graylog-4.3-repository_latest.deb
     apt update && apt install graylog-server graylog-enterprise-plugins graylog-integrations-plugins graylog-enterprise-integrations-plugins pwgen -qy
-    echo -e "\e[32;1;3mRestarting service\e[m"
+    echo -e "\e[32;1;3mEnabling service\e[m"
     systemctl daemon-reload
     systemctl enable --now graylog-server && systemctl start graylog-server
     echo -e "\e[32;1;3mConfiguring Graylog\e[m"
