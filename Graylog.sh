@@ -123,6 +123,7 @@ mongodb_max_connections = 1000
 mongodb_threads_allowed_to_block_multiplier = 5
 proxied_requests_thread_pool_size = 32
 STOP
+    echo -e "\e[32;1;3mRestarting service\e[m"
     systemctl restart graylog-server
     rm -rf /opt/graylog-4.3-repository_latest.deb
 }
@@ -135,12 +136,14 @@ gray() {
     echo -e 'module(load="imtcp")' >> /etc/rsyslog.d/graylog.conf
     echo -e 'input(type="imtcp" port="514")' >> /etc/rsyslog.d/graylog.conf
     echo -e "*.*@127.0.0.1:5140:RSYSLOG_SyslogProtocol23Format" >> /etc/rsyslog.d/graylog.conf
+    echo -e "\e[32;1;3mRestarting service\e[m"
     systemctl restart rsyslog
     logger "Sample: Testing log file."
 }
 
 # Creating exception.
 fire() {
+    echo -e "\e[32;1;3mAdjusting firewall\e[m"
     ufw allow 5140/tcp
     ufw allow 9000/tcp
     ufw allow 9200/tcp
