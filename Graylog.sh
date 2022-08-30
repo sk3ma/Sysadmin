@@ -153,6 +153,21 @@ fire() {
     exit
 }
 
+## Agent installation:
+#agent() {
+#    echo -e "\e[32;1;3mInstalling Sidecar\e[m"
+#    cd /opt
+#    sudo wget https://packages.graylog2.org/repo/packages/graylog-sidecar-repository_1-2_all.deb
+#    sudo dpkg -i graylog-sidecar-repository_1-2_all.deb
+#    sudo apt update && sudo apt install graylog-sidecar -y
+#    echo -e 'server_url: "http://192.168.56.70:9000/api/"' >> /etc/graylog/sidecar/sidecar.yml
+#    echo -e 'server_api_token: "1ot5lqarr44huedvfjel0rmhnkaj1m2d0nr0bdvnopk974kjo5f"' >> /etc/graylog/sidecar/sidecar.yml
+#    echo -e 'node_name: "Ubuntu_node1"' >> /etc/graylog/sidecar/sidecar.yml
+#    sudo systemctl start graylog-sidecar
+#    sudo systemctl status graylog-sidecar
+#    echo -e "\e[33;1;3;5mFinished, agent installed.\e[m"
+#}
+
 # Calling functions.
 if [[ -f /etc/lsb-release ]]; then
     echo -e "\e[35;1;3;5mUbuntu detected, proceeding...\e[m"
@@ -162,4 +177,5 @@ if [[ -f /etc/lsb-release ]]; then
     server
     gray
     fire
+#    agent
 fi
