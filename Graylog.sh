@@ -164,7 +164,7 @@ fire() {
 #    echo -e 'server_api_token: "mkc8r6hilv3t444k0d530fp9hic8bv2niaqrdnm449hee54v1mn"' >> /etc/graylog/sidecar/sidecar.yml
 #    echo -e 'node_name: "Portainer"' >> /etc/graylog/sidecar/sidecar.yml
 #    sudo graylog-sidecar -service install
-#    sudo systemctl start graylog-sidecar && sudo systemctl status graylog-sidecar
+#    sudo systemctl enable graylog-sidecar && sudo systemctl start graylog-sidecar
 #    sudo ufw allow 9000/tcp
 #    echo "y" | ufw enable
 #    sudo ufw reload
