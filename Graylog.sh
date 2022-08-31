@@ -166,7 +166,7 @@ fire() {
 #    sudo graylog-sidecar -service install
 #    sudo systemctl enable graylog-sidecar && sudo systemctl start graylog-sidecar
 #    sudo ufw allow 9000/tcp
-#    echo "y" | ufw enable
+#    echo "y" | sudo ufw enable
 #    sudo ufw reload
 #    sudo rm -rf graylog-sidecar-repository_1-2_all.deb
 #    echo -e "\e[33;1;3;5mFinished, agent installed.\e[m"
