@@ -168,6 +168,7 @@ fire() {
 #    sudo ufw allow 9000/tcp
 #    echo "y" | sudo ufw enable
 #    sudo ufw reload
+#    echo -e 'filebeat 9000/tcp # Graylog Sidecar' >> /etc/services
 #    sudo rm -rf graylog-sidecar-repository_1-2_all.deb
 #    echo -e "\e[33;1;3;5mFinished, agent installed.\e[m"
 #}
