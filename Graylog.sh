@@ -172,6 +172,20 @@ fire() {
 #    echo -e "\e[33;1;3;5mFinished, agent installed.\e[m"
 #}
 
+## NXlog installation:
+#nxlog() {
+#    echo -e "\e[32;1;3mInstalling NXlog\e[m"
+#    cd /opt
+#    sudo wget https://nxlog.co/system/files/products/files/348/nxlog-ce_3.0.2272_ubuntu_focal_amd64.deb
+#    sudo dpkg -i nxlog-ce_3.0.2272_ubuntu_focal_amd64.deb
+#    sudo apt update && sudo apt install nxlog-ce -y
+#    echo -e "\e[32;1;3mStopping service\e[m"
+#    sudo systemctl stop nxlog
+#    sudo chown -vR nxlog.nxlog /var/spool/nxlog
+#    sudo rm -rf nxlog-ce_3.0.2272_ubuntu_focal_amd64.deb
+#    echo -e "\e[33;1;3;5mFinished, NXlog installed.\e[m"
+#}
+
 # Calling functions.
 if [[ -f /etc/lsb-release ]]; then
     echo -e "\e[35;1;3;5mUbuntu detected, proceeding...\e[m"
@@ -182,4 +196,5 @@ if [[ -f /etc/lsb-release ]]; then
     gray
     fire
 #    agent
+#    nxlog
 fi
