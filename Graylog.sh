@@ -35,7 +35,7 @@ java() {
 mongo() {
     echo -e "\e[32;1;3mInstalling MongoDB\e[m"
     apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 9DA31620334BD75D9DCB49F368818C72E52529D4
-    echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-4.0.list
+    echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse" > /etc/apt/sources.list.d/mongodb-org-4.0.list
     apt update && apt install mongodb-org -qy
     echo -e "\e[32;1;3mRestarting service\e[m"
     systemctl daemon-reload
@@ -46,14 +46,14 @@ mongo() {
 elastic() {
     echo -e "\e[32;1;3mInstalling Elasticsearch\e[m"
     wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | apt-key add -
-    echo "deb https://artifacts.elastic.co/packages/oss-7.x/apt stable main" | tee /etc/apt/sources.list.d/elastic-7.x.list
+    echo "deb https://artifacts.elastic.co/packages/oss-7.x/apt stable main" > /etc/apt/sources.list.d/elastic-7.x.list
     apt update && apt install elasticsearch-oss -qy
     echo -e "\e[32;1;3mConfiguring Elasticsearch\e[m"
     cd /etc/elasticsearch
     cp -v elasticsearch.{yml,orig}; rm -f elasticsearch.yml
     local elastic=$(cat << STOP
 node:
-  name: "Elasticsearch"
+  name: elasticsearch
 path:
   data: /var/lib/elasticsearch
   logs: /var/log/elasticsearch
@@ -131,11 +131,11 @@ STOP
 # Syslog configuration.
 gray() {
     echo -e "\e[32;1;3mConfiguring syslog\e[m"
-    echo -e 'module(load="imudp")' >> /etc/rsyslog.d/graylog.conf
-    echo -e 'input(type="imudp" port="514")' >> /etc/rsyslog.d/graylog.conf
-    echo -e 'module(load="imtcp")' >> /etc/rsyslog.d/graylog.conf
-    echo -e 'input(type="imtcp" port="514")' >> /etc/rsyslog.d/graylog.conf
-    echo -e "*.*@127.0.0.1:5140:RSYSLOG_SyslogProtocol23Format" >> /etc/rsyslog.d/graylog.conf
+    echo -e 'module(load="imudp")' >> /etc/rsyslog.d/10-graylog.conf
+    echo -e 'input(type="imudp" port="514")' >> /etc/rsyslog.d/10-graylog.conf
+    echo -e 'module(load="imtcp")' >> /etc/rsyslog.d/10-graylog.conf
+    echo -e 'input(type="imtcp" port="514")' >> /etc/rsyslog.d/10-graylog.conf
+    echo -e "*.*@127.0.0.1:5140:RSYSLOG_SyslogProtocol23Format" >> /etc/rsyslog.d/10-graylog.conf
     echo -e "\e[32;1;3mRestarting service\e[m"
     systemctl restart rsyslog
     logger "Sample: Testing log file."
