@@ -144,7 +144,7 @@ gray() {
 # Creating exception.
 fire() {
     echo -e "\e[32;1;3mAdjusting firewall\e[m"
-    ufw allow 5140/tcp
+    ufw allow 5140/udp
     ufw allow 9000/tcp
     ufw allow 9200/tcp
     echo "y" | ufw enable
@@ -154,18 +154,21 @@ fire() {
 }
 
 ## Sidecar installation:
-#sidecar() {
-#    echo -e "\e[32;1;3mInstalling agent\e[m"
+#agent() {
+#    echo -e "\e[32;1;3mInstalling Sidecar\e[m"
 #    cd /opt
 #    sudo wget https://packages.graylog2.org/repo/packages/graylog-sidecar-repository_1-2_all.deb
 #    sudo dpkg -i graylog-sidecar-repository_1-2_all.deb
 #    sudo apt update && sudo apt install graylog-sidecar -y
-#    echo -e "\e[32;1;3mConfiguring agent\e[m"
 #    echo -e 'server_url: "http://192.168.56.70:9000/api/"' >> /etc/graylog/sidecar/sidecar.yml
-#    echo -e 'server_api_token: "1ot5lqarr44huedvfjel0rmhnkaj1m2d0nr0bdvnopk974kjo5f"' >> /etc/graylog/sidecar/sidecar.yml
-#    echo -e 'node_name: "Ubuntu_node1"' >> /etc/graylog/sidecar/sidecar.yml
-#    sudo systemctl start graylog-sidecar
-#    sudo systemctl status graylog-sidecar
+#    echo -e 'server_api_token: "mkc8r6hilv3t444k0d530fp9hic8bv2niaqrdnm449hee54v1mn"' >> /etc/graylog/sidecar/sidecar.yml
+#    echo -e 'node_name: "Portainer"' >> /etc/graylog/sidecar/sidecar.yml
+#    sudo graylog-sidecar -service install
+#    sudo systemctl start graylog-sidecar && sudo systemctl status graylog-sidecar
+#    sudo ufw allow 9000/tcp
+#    echo "y" | ufw enable
+#    sudo ufw reload
+#    sudo rm -rf graylog-sidecar-repository_1-2_all.deb
 #    echo -e "\e[33;1;3;5mFinished, agent installed.\e[m"
 #}
 
@@ -178,5 +181,5 @@ if [[ -f /etc/lsb-release ]]; then
     server
     gray
     fire
-#    sidecar
+#    agent
 fi
