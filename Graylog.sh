@@ -183,6 +183,7 @@ fire() {
 #    sudo systemctl stop nxlog
 #    sudo chown -vR nxlog.nxlog /var/spool/nxlog
 #    sudo rm -rf nxlog-ce_3.0.2272_ubuntu_focal_amd64.deb
+#    sudo systemctl start nxlog && sudo systemctl status nxlog
 #    echo -e "\e[33;1;3;5mFinished, NXlog installed.\e[m"
 #}
 
