@@ -174,16 +174,17 @@ fire() {
 
 ## NXlog installation:
 #nxlog() {
-#    echo -e "\e[32;1;3mInstalling NXlog\e[m"
+#    echo -e "\e[32;1;3mDownloading NXlog\e[m"
 #    cd /opt
 #    sudo wget https://nxlog.co/system/files/products/files/348/nxlog-ce_3.0.2272_ubuntu_focal_amd64.deb
 #    sudo dpkg -i nxlog-ce_3.0.2272_ubuntu_focal_amd64.deb
-#    sudo apt update && sudo apt install nxlog-ce -y
+#    echo -e "\e[32;1;3mInstalling NXlog\e[m"
+#    sudo apt update && sudo apt --fix-broken install -y
 #    echo -e "\e[32;1;3mStopping service\e[m"
 #    sudo systemctl stop nxlog
 #    sudo chown -vR nxlog.nxlog /var/spool/nxlog
 #    sudo rm -rf nxlog-ce_3.0.2272_ubuntu_focal_amd64.deb
-#    sudo systemctl start nxlog && sudo systemctl status nxlog
+#    sudo systemctl start nxlog && sudo systemctl enable nxlog
 #    echo -e "\e[33;1;3;5mFinished, NXlog installed.\e[m"
 #}
 
