@@ -157,36 +157,32 @@ fire() {
 #agent() {
 #    echo -e "\e[32;1;3mInstalling Sidecar\e[m"
 #    cd /opt
-#    sudo wget https://packages.graylog2.org/repo/packages/graylog-sidecar-repository_1-2_all.deb
-#    sudo dpkg -i graylog-sidecar-repository_1-2_all.deb
-#    sudo apt update && sudo apt install graylog-sidecar -y
+#    wget https://packages.graylog2.org/repo/packages/graylog-sidecar-repository_1-2_all.deb
+#    dpkg -i graylog-sidecar-repository_1-2_all.deb
+#    apt update && apt install graylog-sidecar -y
+#    echo -e "\e[32;1;3mConfiguring Sidecar\e[m"
 #    echo -e 'server_url: "http://192.168.56.70:9000/api/"' >> /etc/graylog/sidecar/sidecar.yml
 #    echo -e 'server_api_token: "mkc8r6hilv3t444k0d530fp9hic8bv2niaqrdnm449hee54v1mn"' >> /etc/graylog/sidecar/sidecar.yml
-#    echo -e 'node_name: "Portainer"' >> /etc/graylog/sidecar/sidecar.yml
-#    sudo graylog-sidecar -service install
-#    sudo systemctl enable graylog-sidecar && sudo systemctl start graylog-sidecar
-#    sudo ufw allow 9000/tcp
-#    echo "y" | sudo ufw enable
-#    sudo ufw reload
-#    echo -e 'filebeat 9000/tcp # Graylog Sidecar' >> /etc/services
-#    sudo rm -rf graylog-sidecar-repository_1-2_all.deb
-#    echo -e "\e[33;1;3;5mFinished, agent installed.\e[m"
+#    echo -e 'node_name: "Ubuntu_node1"' >> /etc/graylog/sidecar/sidecar.yml
+#    echo -e 'log_path: "/var/log/graylog-sidecar"' >> /etc/graylog/sidecar/sidecar.yml
+#    graylog-sidecar -service install
+#    systemctl start graylog-sidecar && systemctl enable graylog-sidecar
+#    ufw allow 9000/tcp
+#    echo "y" | ufw enable
+#    ufw reload
+#    rm -rf graylog-sidecar-repository_1-2_all.deb
+#    echo -e "\e[33;1;3mFinished, agent installed.\e[m"
 #}
 
-## NXlog installation:
-#nxlog() {
-#    echo -e "\e[32;1;3mDownloading NXlog\e[m"
+## Collector installation:
+#file() {
+#    echo -e "\e[32;1;3mInstalling Filebeat\e[m"
 #    cd /opt
-#    sudo wget https://nxlog.co/system/files/products/files/348/nxlog-ce_3.0.2272_ubuntu_focal_amd64.deb
-#    sudo dpkg -i nxlog-ce_3.0.2272_ubuntu_focal_amd64.deb
-#    echo -e "\e[32;1;3mInstalling NXlog\e[m"
-#    sudo apt update && sudo apt --fix-broken install -y
-#    echo -e "\e[32;1;3mStopping service\e[m"
-#    sudo systemctl stop nxlog
-#    sudo chown -vR nxlog.nxlog /var/spool/nxlog
-#    sudo rm -rf nxlog-ce_3.0.2272_ubuntu_focal_amd64.deb
-#    sudo systemctl start nxlog && sudo systemctl enable nxlog
-#    echo -e "\e[33;1;3;5mFinished, NXlog installed.\e[m"
+#    wget https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-oss-7.15.1-amd64.deb
+#    dpkg -i filebeat-oss-7.15.1-amd64.deb
+#    filebeat modules list
+#    filebeat modules enable system
+#    echo -e "\e[33;1;3mFinished, Filebeat installed.\e[m"
 #}
 
 # Calling functions.
@@ -199,5 +195,5 @@ if [[ -f /etc/lsb-release ]]; then
     gray
     fire
 #    agent
-#    nxlog
+#    file
 fi
