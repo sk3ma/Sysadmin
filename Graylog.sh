@@ -139,11 +139,13 @@ gray() {
     echo -e "\e[32;1;3mRestarting service\e[m"
     systemctl restart rsyslog
     logger "Sample: Testing log file."
+    ss -an | grep 5044
 }
 
 # Creating exception.
 fire() {
     echo -e "\e[32;1;3mAdjusting firewall\e[m"
+    ufw allow 5140/tcp
     ufw allow 5140/udp
     ufw allow 9000/tcp
     ufw allow 9200/tcp
