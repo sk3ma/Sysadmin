@@ -139,7 +139,6 @@ gray() {
     echo -e "\e[32;1;3mRestarting service\e[m"
     systemctl restart rsyslog
     logger "Sample: Testing log file."
-    ss -an | grep 5044
 }
 
 # Creating exception.
@@ -152,6 +151,7 @@ fire() {
     ufw allow 9200/tcp
     echo "y" | ufw enable
     ufw reload
+    ss -an | grep 5044
     echo -e "\e[33;1;3;5mFinished, installation complete.\e[m"
     exit
 }
