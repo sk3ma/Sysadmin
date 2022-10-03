@@ -26,7 +26,7 @@ system() {
 # Java installation.
 java() {
     echo -e "\e[32;1;3mInstalling Java\e[m"
-    apt install openjdk-17-jre-headless -qy
+    apt install default-jdk -qy
 }
 
 # Jenkins installation.
@@ -39,6 +39,7 @@ jenkins() {
     apt update
     apt install jenkins -qy
     sed -ie 's|HTTP_PORT=8080|HTTP_PORT=8090|g' /etc/default/jenkins
+    sed -ie 's|JENKINS_ARGS="--webroot=/var/cache/$NAME/war --httpPort=$HTTP_PORT"|JENKINS_ARGS="--webroot=/var/cache/$NAME/war --httpPort=$HTTP_PORT --httpListenAddress=192.168.56.72"|g' /etc/default/jenkins
 }
 
 # Maven installation.
