@@ -57,7 +57,7 @@ config() {
     echo -e "\e[32;1;3mPreparing environment\e[m"
     cp -v ~/.profile{,.orig}
     local maven=$(cat << STOP
-export JAVA_HOME=/usr/lib/jvm/java-1.17.0-openjdk-amd64
+export JAVA_HOME=/usr/lib/jvm/java-1.11.0-openjdk-amd64
 export M2_HOME=/opt/maven
 export M2=/opt/maven/bin
 export PATH=${M2_HOME}/bin:${PATH}
