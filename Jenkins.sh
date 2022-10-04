@@ -78,7 +78,7 @@ key() {
     echo -e "\e[32;1;3mCreating user\e[m"
     groupadd keycloak
     useradd -rg keycloak -d /opt/keycloak -s /sbin/nologin keycloak
-    chown -R keycloak: keycloak
+    chown -R keycloak: /opt/keycloak
     chmod o+x /opt/keycloak/bin
     echo -e "\e[32;1;3mCopying files\e[m"
     cp -v /opt/keycloak/docs/contrib/scripts/systemd/wildfly.conf /etc/keycloak/keycloak.conf
@@ -92,25 +92,8 @@ key() {
 cloak() {
     echo -e "\e[32;1;3mCreating service\e[m"
     cp -v /opt/keycloak/docs/contrib/scripts/systemd/wildfly.service /etc/systemd/system/keycloak.service
-    tee /etc/systemd/system/keycloak.service << STOP > /dev/null
-[Unit]
-Description=The Keycloak Server
-After=syslog.target network.target
-Before=httpd.service
-
-[Service]
-Environment=LAUNCH_JBOSS_IN_BACKGROUND=1
-EnvironmentFile=/etc/keycloak/keycloak.conf
-User=keycloak
-Group=keycloak
-LimitNOFILE=102642
-PIDFile=/var/run/keycloak/keycloak.pid
-ExecStart=/opt/keycloak/bin/launch.sh ${WILDFLY_MODE} ${WILDFLY_CONFIG} ${WILDFLY_BIND}
-StandardOutput=null
-
-[Install]
-WantedBy=multi-user.target
-STOP
+    sed -ie 's|User=wildfly|User=keycloak|g' /etc/systemd/system/keycloak.service
+    echo -e "Group=keycloak" >> /etc/systemd/system/keycloak.service
     echo -e "\e[32;1;3mStarting Keycloak\e[m"
     systemctl daemon-reload
     systemctl start keycloak
