@@ -88,7 +88,7 @@ key() {
     rm -f keycloak-15.0.2.tar.gz
 }
 
-# Keycloak configuration.
+# Keycloak service.
 cloak() {
     echo -e "\e[32;1;3mCreating service\e[m"
     cp -v /opt/keycloak/docs/contrib/scripts/systemd/wildfly.service /etc/systemd/system/keycloak.service
