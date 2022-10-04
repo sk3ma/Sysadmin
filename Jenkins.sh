@@ -55,7 +55,7 @@ install() {
 # Maven configuration.
 config() {
     echo -e "\e[32;1;3mPreparing environment\e[m"
-    cp -v ~/.profile{,.orig}
+    cp ~/.profile{,.orig}
     local maven=$(cat << STOP
 export JAVA_HOME=/usr/lib/jvm/java-1.11.0-openjdk-amd64
 export M2_HOME=/opt/maven
@@ -92,7 +92,11 @@ key() {
 cloak() {
     echo -e "\e[32;1;3mCreating service\e[m"
     cp -v /opt/keycloak/docs/contrib/scripts/systemd/wildfly.service /etc/systemd/system/keycloak.service
+    sed -ie 's|Description=The WildFly Application Server|Description=The Keycloak Server|g' /etc/systemd/system/keycloak.service
+    sed -ie 's|EnvironmentFile=-/etc/wildfly/wildfly.conf|EnvironmentFile=/etc/keycloak/keycloak.conf|g' /etc/systemd/system/keycloak.service
     sed -ie 's|User=wildfly|User=keycloak|g' /etc/systemd/system/keycloak.service
+    sed -ie 's|PIDFile=/var/run/wildfly/wildfly.pid|PIDFile=/var/run/keycloak/keycloak.pid|g' /etc/systemd/system/keycloak.service
+    sed -ie 's|ExecStart=/opt/wildfly/bin/launch.sh|ExecStart=/opt/keycloak/bin/launch.sh|g' /etc/systemd/system/keycloak.service
     echo -e "Group=keycloak" >> /etc/systemd/system/keycloak.service
     echo -e "\e[32;1;3mStarting Keycloak\e[m"
     systemctl daemon-reload
