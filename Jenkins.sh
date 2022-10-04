@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-#####################################################################
-# This script automates a Jenkins build server for Ubuntu 20.04.    #
-# The script installs Java, Jenkins, Maven and alters the firewall. #
-#####################################################################
+##################################################################
+# This script automates a Jenkins build server for Ubuntu 20.04. #
+# The script installs Java, Jenkins, Maven and Keycloak server.  #
+##################################################################
 
 # Declaring variables.
 DISTRO=$(lsb_release -ds)
@@ -67,18 +67,69 @@ STOP
     echo "${maven}" >> ~/.profile
 }
 
+# Keycloak installation.
+key() {
+    echo -e "\e[32;1;3mInstalling Keycloak\e[m"
+    mkdir -vp /etc/keycloak
+    wget --progress=bar:force https://github.com/keycloak/keycloak/releases/download/15.0.2/keycloak-15.0.2.tar.gz
+    echo -e "\e[32;1;3mUnpacking files\e[m"
+    tar -xvzf keycloak-15.0.2.tar.gz
+    mv -v keycloak-15.0.2 keycloak
+    echo -e "\e[32;1;3mCreating user\e[m"
+    groupadd keycloak
+    useradd -rg keycloak -d /opt/keycloak -s /sbin/nologin keycloak
+    chown -R keycloak: keycloak
+    chmod o+x /opt/keycloak/bin
+    echo -e "\e[32;1;3mCopying files\e[m"
+    cp -v /opt/keycloak/docs/contrib/scripts/systemd/wildfly.conf /etc/keycloak/keycloak.conf
+    cp -v /opt/keycloak/docs/contrib/scripts/systemd/launch.sh /opt/keycloak/bin
+    chown keycloak: /opt/keycloak/bin/launch.sh
+    sed -ie 's|WILDFLY_HOME="/opt/wildfly"|WILDFLY_HOME="/opt/keycloak"|g' /opt/keycloak/bin/launch.sh
+    rm -f keycloak-15.0.2.tar.gz
+}
+
+# Keycloak configuration.
+cloak() {
+    echo -e "\e[32;1;3mCreating service\e[m"
+    cp -v /opt/keycloak/docs/contrib/scripts/systemd/wildfly.service /etc/systemd/system/keycloak.service
+    tee /etc/systemd/system/keycloak.service << STOP > /dev/null
+[Unit]
+Description=The Keycloak Server
+After=syslog.target network.target
+Before=httpd.service
+
+[Service]
+Environment=LAUNCH_JBOSS_IN_BACKGROUND=1
+EnvironmentFile=/etc/keycloak/keycloak.conf
+User=keycloak
+Group=keycloak
+LimitNOFILE=102642
+PIDFile=/var/run/keycloak/keycloak.pid
+ExecStart=/opt/keycloak/bin/launch.sh ${WILDFLY_MODE} ${WILDFLY_CONFIG} ${WILDFLY_BIND}
+StandardOutput=null
+
+[Install]
+WantedBy=multi-user.target
+STOP
+    echo -e "\e[32;1;3mStarting Keycloak\e[m"
+    systemctl daemon-reload
+    systemctl start keycloak
+    systemctl enable keycloak
+}
+
 # Creating exception.
 firewall() {
     echo -e "\e[32;1;3mAdjusting firewall\e[m"
     ufw allow 80,443/tcp
-    ufw allow 5044,8090,10050/tcp
+    ufw allow 8080,8090/tcp
+    ufw allow 5044,10050/tcp
     echo "y" | ufw enable
     ufw reload
 }
 
 # Enabling service.
 service() {
-    echo -e "\e[32;1;3mStarting service\e[m"
+    echo -e "\e[32;1;3mStarting Jenkins\e[m"
     systemctl restart jenkins
     systemctl enable jenkins
     echo -e "\e[32;1;3mRevealing password\e[m"
@@ -95,6 +146,8 @@ if [[ -f /etc/lsb-release ]]; then
     jenkins
     install
     config
+    key
+    cloak
     firewall
     service
 fi
