@@ -83,7 +83,7 @@ server() {
     echo -e "\e[32;1;3mConfiguring Graylog\e[m"
     cd /etc/graylog/server
     cp -v server.{conf,orig}; rm -f server.conf
-    tee server.conf << STOP
+    tee server.conf << STOP > /dev/null
 is_master = true
 node_id_file = /etc/graylog/server/node-id
 password_secret = ${SECRET}
