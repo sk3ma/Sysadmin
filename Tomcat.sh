@@ -54,7 +54,7 @@ firewall() {
 create() {
     echo -e "\e[1;3mCreating service\e[m"
     cd /etc/systemd/system/
-    tee tomcat-ubuntu << STOP
+    tee tomcat-ubuntu << STOP > /dev/null
 [Unit]
 Description=Tomcat 9 servlet container
 After=network.target
@@ -89,7 +89,7 @@ users() {
     echo -e "\e[1;3mCreating users\e[m"
     cp -v /opt/tomcat/latest/conf/tomcat-users.xml /opt/tomcat/latest/conf/tomcat-users.orig
     rm -f /opt/tomcat/latest/conf/tomcat-users.xml
-    tee -a /opt/tomcat/latest/conf/tomcat-users.xml << STOP
+    tee -a /opt/tomcat/latest/conf/tomcat-users.xml << STOP > /dev/null
 <?xml version="1.0" encoding="UTF-8"?>
 <tomcat-users xmlns="http://tomcat.apache.org/xml"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
