@@ -50,7 +50,7 @@ install() {
     echo -e "\e[32;1;3mInstalling Maven\e[m"
     wget --progress=bar:force https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz
     echo -e "\e[32;1;3mUnpacking files\e[m"
-    tar -xvzf apache-maven-3.8.6-bin.tar.gz
+    tar -xzf apache-maven-3.8.6-bin.tar.gz
     mv -v apache-maven-3.8.6 maven
     rm -f apache-maven-3.8.6-bin.tar.gz
 }
