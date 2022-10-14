@@ -39,7 +39,7 @@ jenkins() {
     echo -e "\e[32;1;3mInstalling Jenkins\e[m"
     apt update
     apt install jenkins -qy
-    echo 'jenkins ALL=(ALL) NOPASSWD:ALL'| tee /etc/sudoers.d/jenkins > /dev/null
+    echo 'jenkins ALL=(ALL) NOPASSWD:ALL' | tee /etc/sudoers.d/jenkins > /dev/null
     echo -e "\e[32;1;3mUpdating ports\e[m"
     sed -ie 's|HTTP_PORT=8080|HTTP_PORT=8090|g' /etc/default/jenkins
     sed -ie 's|JENKINS_ARGS="--webroot=/var/cache/$NAME/war --httpPort=$HTTP_PORT"|JENKINS_ARGS="--webroot=/var/cache/$NAME/war --httpPort=8090 --httpListenAddress=192.168.56.72"|g' /etc/default/jenkins
