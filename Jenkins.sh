@@ -126,7 +126,7 @@ service() {
     echo -e "\e[32;1;3mRevealing password\e[m"
     cat /var/lib/jenkins/secrets/initialAdminPassword
     echo -e "\e[33;32;1;3mKeycloak URL - http://${IPADDR}:8080\e[m"
-    echo -e "\e[33;32;1;3mJenkins URL: - http://${IPADDR}:8090\e[m"
+    echo -e "\e[33;32;1;3mJenkins URL - http://${IPADDR}:8090\e[m"
     exit
 }
 
