@@ -8,6 +8,7 @@
 # Declaring variables.
 DISTRO=$(lsb_release -ds)
 USERID=$(id -u)
+IPADDR=192.168.56.72
 
 # Sanity checking.
 if [[ ${USERID} -ne "0" ]]; then
@@ -75,7 +76,7 @@ key() {
     mkdir -vp /etc/keycloak
     wget --progress=bar:force https://github.com/keycloak/keycloak/releases/download/15.0.2/keycloak-15.0.2.tar.gz
     echo -e "\e[32;1;3mUnpacking files\e[m"
-    tar -xvzf keycloak-15.0.2.tar.gz
+    tar -xzf keycloak-15.0.2.tar.gz
     mv -v keycloak-15.0.2 keycloak
     echo -e "\e[32;1;3mCreating user\e[m"
     groupadd keycloak
@@ -94,6 +95,7 @@ key() {
 cloak() {
     echo -e "\e[32;1;3mCreating service\e[m"
     cp -v /opt/keycloak/docs/contrib/scripts/systemd/wildfly.service /etc/systemd/system/keycloak.service
+    echo -e "\e[32;1;3mUpdating configuration\e[m"
     sed -ie 's|Description=The WildFly Application Server|Description=The Keycloak Server|g' /etc/systemd/system/keycloak.service
     sed -ie 's|EnvironmentFile=-/etc/wildfly/wildfly.conf|EnvironmentFile=/etc/keycloak/keycloak.conf|g' /etc/systemd/system/keycloak.service
     sed -ie 's|User=wildfly|User=keycloak|g' /etc/systemd/system/keycloak.service
@@ -123,7 +125,8 @@ service() {
     systemctl enable jenkins
     echo -e "\e[32;1;3mRevealing password\e[m"
     cat /var/lib/jenkins/secrets/initialAdminPassword
-    echo -e "\e[33;32;1;3;5mFinished, configure webUI.\e[m"
+    echo -e "\e[33;32;1;3mKeycloak URL - http://${IPADDR}:8080\e[m"
+    echo -e "\e[33;32;1;3mJenkins URL: - http://${IPADDR}:8090\e[m"
     exit
 }
 
