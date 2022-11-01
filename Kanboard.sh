@@ -5,7 +5,6 @@
 # The script installs the LAMP stack and configures Kanboard server  #
 ######################################################################
 
-
 # Declaring variables.
 DISTRO=$(lsb_release -ds)
 USERID=$(id -u)
