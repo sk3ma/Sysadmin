@@ -75,14 +75,17 @@ comp() {
 kanban() {
     echo -e "\e[32;1;3mInstalling Kanboard\e[m"
     cd /opt
-    git clone https://github.com/kanboard/kanboard.git
-    mv -v kanboard /var/www/kanboard
+    wget --progress=bar:force https://github.com/kanboard/kanboard/archive/v1.2.22.tar.gz
+    echo -e "\e[32;1;3mUnpacking files\e[m"
+    tar -xzf v1.2.22.tar.gz
+    mv -v kanboard-1.2.22 /var/www/html/kanboard
     cd /var/www/kanboard
     mv -v config.default.php config.php
     echo "yes" | composer install
     echo -e "\e[32;1;3mChanging permissions\e[m"
     chown -R www-data:www-data /var/www/kanboard
     chmod -R 755 /var/www/kanboard
+    rm -f v1.2.22.tar.gz
 }
 
 # Kanboard configuration.
@@ -99,7 +102,7 @@ site() {
     echo -e "\e[32;1;3mConfiguring Apache\e[m"
     local vhost=$(cat << STOP
 <VirtualHost *:80>
-        ServerName kanban.mycompany.com
+        ServerName 192.168.56.72
         DocumentRoot /var/www/kanboard
         <Directory /var/www/kanboard>
             Options FollowSymLinks
