@@ -88,10 +88,10 @@ kanban() {
 # Kanboard configuration.
 config() {
     echo -e "\e[32;1;3mConfiguring Kanboard\e[m"
-    echo -e 'define('DB_DRIVER', 'mysql');' >> /var/www/kanboard/config.php
-    echo -e 'define('DB_USERNAME', 'osadmin');' >> /var/www/kanboard/config.php
-    echo -e 'define('DB_PASSWORD', '1q2w3e4r5t');' >> /var/www/kanboard/config.php
-    echo -e 'define('DB_NAME', 'kanboard_db');' >> /var/www/kanboard/config.php
+    sed -ie "s|define('DB_DRIVER', 'sqlite');|define('DB_DRIVER', 'mysql');|g" /var/www/kanboard/config.php
+    sed -ie "s|define('DB_USERNAME', 'root');|define('DB_USERNAME', 'osadmin');|g" /var/www/kanboard/config.php
+    sed -ie "s|define('DB_PASSWORD', '');|define('DB_PASSWORD', '1q2w3e4r5t');|g" /var/www/kanboard/config.php
+    sed -ie "s|define('DB_NAME', 'kanboard');|define('DB_NAME', 'kanboard_db');|g" /var/www/kanboard/config.php
 }
 
 # Kanboard virtualhost.
@@ -99,7 +99,7 @@ site() {
     echo -e "\e[32;1;3mConfiguring Apache\e[m"
     local vhost=$(cat << STOP
 <VirtualHost *:80>
-        ServerName 192.168.56.72
+        ServerName kanban.mycompany.com
         DocumentRoot /var/www/kanboard
         <Directory /var/www/kanboard>
             Options FollowSymLinks
@@ -112,8 +112,8 @@ site() {
 STOP
 )
     echo "${vhost}" > /etc/apache2/sites-available/kanboard.conf
-    sed -ie 's|80|8082|g' /etc/apache2/sites-enabled/kanboard.conf
     ln -s /etc/apache2/sites-available/kanboard.conf /etc/apache2/sites-enabled/kanboard.conf
+    sed -ie 's|80|8082|g' /etc/apache2/sites-enabled/kanboard.conf
     a2enmod rewrite
     a2ensite kanboard.conf
     echo -e "\e[32;1;3mRestarting Apache\e[m"
