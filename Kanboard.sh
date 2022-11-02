@@ -24,7 +24,7 @@ apache() {
     systemctl start apache2
     systemctl enable apache2
     echo "<h1>Apache is operational</h1>" > /var/www/html/index.html
-    sed -ie 's/80/8082/g' /etc/apache2/ports.conf
+    sed -ie 's|80|8082|g' /etc/apache2/ports.conf
 }
 
 # PHP installation.
@@ -114,7 +114,7 @@ site() {
 STOP
 )
     echo "${vhost}" > /etc/apache2/sites-available/kanboard.conf
-    sed -ie 's/80/8082/g' /etc/apache2/sites-enabled/kanboard.conf
+    sed -ie 's|80|8082|g' /etc/apache2/sites-enabled/kanboard.conf
     a2enmod rewrite
     a2ensite kanboard.conf
     echo -e "\e[32;1;3mRestarting Apache\e[m"
