@@ -91,7 +91,7 @@ kanban() {
     cd /var/www/kanboard/plugins
     git clone https://github.com/sms77io/kanboard Sms77
     echo -e "\e[32;1;3mDownloading theme\e[m"
-    git clone https://github.com/p0lym0rphik/Greenwing.git
+    git clone https://github.com/bw-hro/WeKanboard.git
 }
 
 # Kanboard configuration.
