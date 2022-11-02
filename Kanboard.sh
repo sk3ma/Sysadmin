@@ -24,6 +24,7 @@ apache() {
     systemctl start apache2
     systemctl enable apache2
     echo "<h1>Apache is operational</h1>" > /var/www/html/index.html
+    echo -e "\e[32;1;3mChanging port\e[m"
     sed -ie 's|80|8082|g' /etc/apache2/ports.conf
 }
 
@@ -86,7 +87,7 @@ kanban() {
     chown -R www-data:www-data /var/www/kanboard
     chmod -R 755 /var/www/kanboard
     rm -f v1.2.22.tar.gz
-    echo -e "\e[32;1;3mDownloaing plugin\e[m"
+    echo -e "\e[32;1;3mDownloading plugin\e[m"
     cd /var/www/kanboard/plugins
     git clone https://github.com/sms77io/kanboard Sms77
 }
