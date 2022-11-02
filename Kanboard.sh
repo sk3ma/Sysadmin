@@ -64,7 +64,7 @@ STOP
 
 # Composer installation.
 comp() {
-    echo -e "\e[32;1;3mInstalling Composer\e[m"
+    echo -e "\e[32;1;3mDownloading Composer\e[m"
     apt install git unzip vim -y
     curl -sS https://getcomposer.org/installer | php
     mv -v composer.phar /usr/local/bin/composer
@@ -78,10 +78,11 @@ kanban() {
     cd /opt
     wget --progress=bar:force https://github.com/kanboard/kanboard/archive/v1.2.22.tar.gz
     echo -e "\e[32;1;3mUnpacking files\e[m"
-    tar -xzf v1.2.22.tar.gz
+    tar -xvzf v1.2.22.tar.gz
     mv -v kanboard-1.2.22 /var/www/kanboard
     cd /var/www/kanboard
     mv -v config.default.php config.php
+    echo -e "\e[32;1;3mInstalling Composer\e[m"
     echo "yes" | composer install
     echo -e "\e[32;1;3mChanging permissions\e[m"
     chown -R www-data:www-data /var/www/kanboard
