@@ -72,7 +72,7 @@ comp() {
     source ~/.bashrc
 }
 
-# Kanboard database.
+# Kanboard installation.
 kanban() {
     echo -e "\e[32;1;3mInstalling Kanboard\e[m"
     cd /opt
