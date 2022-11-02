@@ -79,7 +79,7 @@ kanban() {
     mv -v kanboard /var/www/kanboard
     cd /var/www/kanboard
     mv -v config.default.php config.php
-    composer install
+    echo "yes" | composer install
     echo -e "\e[32;1;3mChanging permissions\e[m"
     chown -R www-data:www-data /var/www/kanboard
     chmod -R 755 /var/www/kanboard
