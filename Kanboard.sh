@@ -37,7 +37,7 @@ web() {
 # MariaDB installation.
 maria() {
     echo -e "\e[32;1;3mInstalling MariaDB\e[m"
-    apt install software-properties-common curl -qy
+    apt install curl software-properties-common -qy
     cd /opt
     curl -LsS -O https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
     bash mariadb_repo_setup --mariadb-server-version=10.6
@@ -78,7 +78,7 @@ kanban() {
     wget --progress=bar:force https://github.com/kanboard/kanboard/archive/v1.2.22.tar.gz
     echo -e "\e[32;1;3mUnpacking files\e[m"
     tar -xzf v1.2.22.tar.gz
-    mv -v kanboard-1.2.22 /var/www/html/kanboard
+    mv -v kanboard-1.2.22 /var/www/kanboard
     cd /var/www/kanboard
     mv -v config.default.php config.php
     echo "yes" | composer install
@@ -86,6 +86,9 @@ kanban() {
     chown -R www-data:www-data /var/www/kanboard
     chmod -R 755 /var/www/kanboard
     rm -f v1.2.22.tar.gz
+    echo -e "\e[32;1;3mDownloaing plugin\e[m"
+    cd /var/www/kanboard/plugins
+    git clone https://github.com/sms77io/kanboard Sms77
 }
 
 # Kanboard configuration.
@@ -101,8 +104,8 @@ config() {
 site() {
     echo -e "\e[32;1;3mConfiguring Apache\e[m"
     local vhost=$(cat << STOP
-<VirtualHost *:80>
-        ServerName 192.168.56.72
+<VirtualHost 192.168.56.72:80>
+        ServerName kanban.mycompany.com
         DocumentRoot /var/www/kanboard
         <Directory /var/www/kanboard>
             Options FollowSymLinks
