@@ -101,6 +101,7 @@ config() {
     sed -ie "s|define('DB_USERNAME', 'root');|define('DB_USERNAME', 'osadmin');|g" /var/www/kanboard/config.php
     sed -ie "s|define('DB_PASSWORD', '');|define('DB_PASSWORD', '1q2w3e4r5t');|g" /var/www/kanboard/config.php
     sed -ie "s|define('DB_NAME', 'kanboard');|define('DB_NAME', 'kanboard_db');|g" /var/www/kanboard/config.php
+    sed -ie "s|define('PLUGIN_INSTALLER', false);|define('PLUGIN_INSTALLER', true);|g" /var/www/kanboard/config.php
 }
 
 # Kanboard virtualhost.
