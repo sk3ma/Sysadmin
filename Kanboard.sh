@@ -2,7 +2,7 @@
 
 ######################################################################
 # This script will automate a Kanboard installation on Ubuntu 20.04. #
-# The script installs the LAMP stack and configures Kanboard server  #
+# The script installs the LAMP stack and configures Kanboard server. #
 ######################################################################
 
 # Declaring variables.
