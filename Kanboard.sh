@@ -97,11 +97,9 @@ config() {
 # Kanboard virtualhost.
 site() {
     echo -e "\e[32;1;3mConfiguring Apache\e[m"
-    touch /etc/apache2/sites-available/kanboard.conf
-    ln -s /etc/apache2/sites-available/kanboard.conf /etc/apache2/sites-enabled/kanboard.conf
     local vhost=$(cat << STOP
 <VirtualHost *:80>
-        ServerName kanboard.mycompany.com
+        ServerName 192.168.56.72
         DocumentRoot /var/www/kanboard
         <Directory /var/www/kanboard>
             Options FollowSymLinks
@@ -115,6 +113,7 @@ STOP
 )
     echo "${vhost}" > /etc/apache2/sites-available/kanboard.conf
     sed -ie 's|80|8082|g' /etc/apache2/sites-enabled/kanboard.conf
+    ln -s /etc/apache2/sites-available/kanboard.conf /etc/apache2/sites-enabled/kanboard.conf
     a2enmod rewrite
     a2ensite kanboard.conf
     echo -e "\e[32;1;3mRestarting Apache\e[m"
