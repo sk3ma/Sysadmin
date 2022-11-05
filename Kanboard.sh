@@ -60,6 +60,18 @@ GRANT ALL PRIVILEGES ON kanboard_db.* TO 'osadmin'@'%';
 STOP
 )
     echo "${dbase}" > /var/www/html/kanboard_db.sql
+    cat << STOP > /tmp/silent.txt
+echo | enter
+y
+y
+2XcZCnMk
+2XcZCnMk
+y
+y
+y
+y
+STOP
+   mysql_secure_installation < /tmp/silent.txt
 }
 
 # Composer installation.
