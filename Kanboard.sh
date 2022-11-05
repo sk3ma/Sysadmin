@@ -61,7 +61,7 @@ STOP
 )
     echo "${dbase}" > /var/www/html/kanboard_db.sql
     cat << STOP > /tmp/silent.txt
-echo | enter
+echo | "enter"
 y
 y
 2XcZCnMk
