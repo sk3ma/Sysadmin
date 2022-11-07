@@ -52,7 +52,7 @@ maria() {
 
 # Kanboard database.
 data() {
-    echo -e "\e[32;1;3mConfiguring MariaDB\e[m"
+    echo -e "\e[32;1;3mCreating database\e[m"
     local dbase=$(cat << STOP
 CREATE DATABASE kanboard_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE USER 'osadmin'@'%' identified by '1q2w3e4r5t';
@@ -60,7 +60,8 @@ GRANT ALL PRIVILEGES ON kanboard_db.* TO 'osadmin'@'%';
 STOP
 )
     echo "${dbase}" > /var/www/html/kanboard_db.sql
-    cat << STOP > /tmp/silent.txt
+    echo -e "\e[32;1;3mConfiguring MariaDB\e[m"
+    cat << STOP > /tmp/answer.txt
 echo | "enter"
 y
 y
@@ -71,7 +72,9 @@ y
 y
 y
 STOP
-   mysql_secure_installation < /tmp/silent.txt
+   mysql_secure_installation < /tmp/answer.txt
+   echo -e "\e[32;1;3mImporting database\e[m"
+   mysql -u root -p2XcZCnMk < /var/www/html/kanboard_db.sql
 }
 
 # Composer installation.
