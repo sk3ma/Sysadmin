@@ -43,7 +43,7 @@ maria() {
     curl -LsS -O https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
     bash mariadb_repo_setup --mariadb-server-version=10.6
     apt update
-    apt install mariadb-server-10.6 mariadb-client-10.6 mariadb-common -qy
+    apt install mariadb-server-10.6 mariadb-client-10.6 mariadb-common pv -qy
     echo -e "\e[32;1;3mStarting MariaDB\e[m"
     systemctl start mariadb
     systemctl enable mariadb
@@ -74,13 +74,13 @@ y
 STOP
    mysql_secure_installation < /tmp/answer.txt
    echo -e "\e[32;1;3mImporting database\e[m"
-   mysql -u root -p2XcZCnMk < /var/www/html/kanboard_db.sql
+   mysql -u root -p2XcZCnMk < /var/www/html/kanboard_db.sql | pv
 }
 
 # Composer installation.
 comp() {
     echo -e "\e[32;1;3mDownloading Composer\e[m"
-    apt install git unzip vim -y
+    apt install git unzip -y
     curl -sS https://getcomposer.org/installer | php
     mv -v composer.phar /usr/local/bin/composer
     chmod +x /usr/local/bin/composer
