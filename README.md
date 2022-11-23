@@ -1,2 +1,2 @@
 # 2022
-Bash scripts for 2022.
+Various Bash scripts written in 2022.
