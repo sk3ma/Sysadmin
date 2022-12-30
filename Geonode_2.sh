@@ -29,7 +29,7 @@ environment() {
     echo -e "\e[32;1;3mShowing containers\e[m"
     docker-compose ps
     echo -e "\e[33;1;3;5mFinished, configure webUI.\e[m"
-#    exit
+    exit
 }
 
 # Calling functions.
