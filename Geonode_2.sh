@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-######################################################################
-# This script will automate a Geonode installation on Ubuntu 20.04.  #
-# Part two will prepare Geonode, the containers, and the environment #
-######################################################################
+#######################################################################
+# This script will automate a Geonode installation on Ubuntu 20.04.   #
+# Part two will prepare Geonode, the containers, and the environment. #
+#######################################################################
 
 # Geonode installation.
 geonode() {
