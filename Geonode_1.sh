@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-####################################################################
-# This script will automate a Geonode installation on Ubuntu 20.04.#
-# Part one will install Docker and create the Geonode directory.   #
-####################################################################
+#####################################################################
+# This script will automate a Geonode installation on Ubuntu 20.04. #
+# Part one will install Docker and create the Geonode directory.    #
+#####################################################################
 
 # Declaring variables.
 DISTRO=$(lsb_release -ds)
@@ -14,11 +14,17 @@ system() {
     echo -e "\e[96;1;3mDistribution: ${DISTRO}\e[m"
     echo -e "\e[32;1;3mUpdating repositories\e[m"
     sudo add-apt-repository ppa:ubuntugis/ppa -y
-    echo -e "\e[32;1;3mInstalling packages\e[m"
-    sudo apt install software-properties-common -qy
     sudo add-apt-repository universe -y
-    sudo apt install git-core git-buildpackage debhelper devscripts -qy
-    sudo apt install apt-transport-https ca-certificates gnupg-agent curl -qy
+    echo -e "\e[32;1;3mInstalling packages\e[m"
+    sudo apt install apt-transport-https \
+        ca-certificates \
+        software-properties-common \
+        git-core \
+        git-buildpackage \
+        debhelper \
+        devscripts \
+        gnupg-agent \
+        curl -qy
 }
 
 # Docker installation.
