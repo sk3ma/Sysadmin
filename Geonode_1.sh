@@ -11,7 +11,7 @@ VERSION=$(lsb_release -cs)
 
 cat << STOP
 # --------------------------#
-# Welcome to the script.    #
+#   Welcome to the script.  #
 # --------------------------#
         \   ^__^
          \  (OO)\_______
