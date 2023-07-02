@@ -9,6 +9,17 @@
 DISTRO=$(lsb_release -ds)
 VERSION=$(lsb_release -cs)
 
+cat << STOP
+# --------------------------#
+# Welcome to the script.    #
+# --------------------------#
+        \   ^__^
+         \  (OO)\_______
+            (__)\       )\/\
+             U  ||----w |
+                ||     ||
+STOP
+
 # System preparation.
 system() {
     echo -e "\e[96;1;3mDistribution: ${DISTRO}\e[m"
