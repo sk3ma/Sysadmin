@@ -18,6 +18,7 @@ cat << STOP
             (__)\       )\/\
              U  ||----w |
                 ||     ||
+
 STOP
 
 # System preparation.
