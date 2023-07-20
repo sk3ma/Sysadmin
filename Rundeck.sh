@@ -46,13 +46,14 @@ maria() {
 # Rundeck database.
 data() {
     echo -e "\e[32;1;3m[INFO] Creating database\e[m"
+    mkdir -vp /srv/scripts
     local dbase=$(cat << STOP
 CREATE DATABASE rundeck_db;
 CREATE USER 'osadmin'@'localhost' IDENTIFIED BY '1q2w3e4r5t';
 GGRANT ALL PRIVILEGES ON *.* TO 'osadmin'@'localhost' WITH GRANT OPTION;
 STOP
 )
-    echo "${dbase}" > /var/www/html/rundeck_db.sql
+    echo "${dbase}" > /srv/scripts/rundeck_db.sql
     echo -e "\e[32;1;3m[INFO] Configuring MariaDB\e[m"
     cat << STOP > /tmp/answer.txt
 echo | "enter"
@@ -67,7 +68,7 @@ y
 STOP
    mysql_secure_installation < /tmp/answer.txt
    echo -e "\e[32;1;3m[INFO] Importing database\e[m"
-   mysql -u root -p4XiZCnOk < /var/www/html/rundeck_db.sql | pv
+   mysql -u root -p4XiZCnOk < /srv/scripts/rundeck_db.sql | pv
 }
 
 # Rundeck installation.
