@@ -88,7 +88,7 @@ config() {
     sed -ie 's|grails.serverURL=http://localhost:4440|grails.serverURL=http://192.168.56.72:4440|g' /etc/rundeck/rundeck-config.properties
     echo -e "dataSource.driverClassName = org.mariadb.jdbc.Driver" >> /etc/rundeck/rundeck-config.properties
     echo -e "dataSource.url = jdbc:mysql://localhost/rundeck_db?autoReconnect=true&useSSL=false" >> /etc/rundeck/rundeck-config.properties
-    echo -e "dataSource.username = osadmin" >> /etc/rundeck/rundeck-config.properties
+    echo -e "dataSource.username = rundeck_user" >> /etc/rundeck/rundeck-config.properties
     echo -e "dataSource.password = 1q2w3e4r5t" >> /etc/rundeck/rundeck-config.properties
     echo -e "\e[32;1;3m[INFO] Starting Rundeck\e[m"
     systemctl start rundeckd
