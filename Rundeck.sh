@@ -11,7 +11,7 @@ USERID=$(id -u)
 
 # Sanity checking.
 if [[ ${USERID} -ne "0" ]]; then
-    echo -e "\e[32;1;3;5m[INFO] You must be root, exiting.\e[m"
+    echo -e "\e[32;1;3;5m[ERROR] You must be root, exiting.\e[m"
     exit 1
 fi
 
@@ -103,7 +103,7 @@ fire() {
     ufw reload
     echo -e "\e[32;1;3m[INFO] Restarting Rundeck\e[m"
     systemctl restart rundeckd
-    echo -e "\e[33;1;3;5m[INFO] Finished, installation complete.\e[m"
+    echo -e "\e[33;1;3;5m[NOTICE] Finished, installation complete.\e[m"
     exit
 }
 
