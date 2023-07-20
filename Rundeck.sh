@@ -75,6 +75,7 @@ install() {
     echo -e "\e[32;1;3m[INFO] Installing Rundeck\e[m"
     echo "deb https://packages.rundeck.com/pagerduty/rundeck/any/ any main" >> /etc/apt/sources.list.d/rundeck.list
     echo "deb-src https://packages.rundeck.com/pagerduty/rundeck/any/ any main" >> /etc/apt/sources.list.d/rundeck.list
+    curl -L https://packages.rundeck.com/pagerduty/rundeck/gpgkey | apt-key add -
     apt update
     apt install rundeck -qy
     
@@ -83,10 +84,10 @@ install() {
 # Rundeck configuration.
 config() {
     echo -e "\e[32;1;3m[INFO] Configuring Rundeck\e[m"
-    echo -e "grails.serverURL=http://RUNDECK_SERVER_IP:4440" >> /etc/rundeck/rundeck-config.properties
+    echo -e "grails.serverURL=http://192.168.56.72:4440" >> /etc/rundeck/rundeck-config.properties
     echo -e "dataSource.driverClassName = org.mariadb.jdbc.Driver" >> /etc/rundeck/rundeck-config.properties
     echo -e "dataSource.url = jdbc:mysql://localhost/rundeck_db?autoReconnect=true&useSSL=false" >> /etc/rundeck/rundeck-config.properties
-    echo -e "dataSource.username = rundeck_user" >> /etc/rundeck/rundeck-config.properties
+    echo -e "dataSource.username = osadmin" >> /etc/rundeck/rundeck-config.properties
     echo -e "dataSource.password = 1q2w3e4r5t" >> /etc/rundeck/rundeck-config.properties
     echo -e "\e[32;1;3m[INFO] Starting Rundeck\e[m"
     systemctl start rundeckd
