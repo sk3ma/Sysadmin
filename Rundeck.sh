@@ -17,7 +17,7 @@ fi
 
 # System packages.
 system() {
-    echo -e "\e[96;1;3m[INFO] Distribution: ${DISTRO}\e[m"
+    echo -e "\e[96;1;3m[OK] Distribution: ${DISTRO}\e[m"
     echo -e "\e[32;1;3m[INFO] Updating system\e[m"
     apt update
 }
@@ -109,7 +109,7 @@ fire() {
 
 # Calling functions.
 if [[ -f /etc/lsb-release ]]; then
-    echo -e "\e[35;1;3;5m[INFO] Ubuntu detected, proceeding...\e[m"
+    echo -e "\e[35;1;3;5m[OK] Ubuntu detected, proceeding...\e[m"
     system
     java
     maria
