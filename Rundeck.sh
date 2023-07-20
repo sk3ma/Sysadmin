@@ -50,7 +50,7 @@ data() {
     local dbase=$(cat << STOP
 CREATE DATABASE rundeck_db;
 CREATE USER 'rundeck_user'@'localhost' IDENTIFIED BY '1q2w3e4r5t';
-GGRANT ALL PRIVILEGES ON *.* TO 'rundeck_user'@'localhost' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON *.* TO 'rundeck_user'@'localhost' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 STOP
 )
