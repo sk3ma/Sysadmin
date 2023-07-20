@@ -51,7 +51,6 @@ data() {
 CREATE DATABASE rundeck_db;
 CREATE USER 'rundeck_user'@'localhost' IDENTIFIED BY '1q2w3e4r5t';
 GRANT ALL PRIVILEGES ON *.* TO 'rundeck_user'@'localhost' WITH GRANT OPTION;
-FLUSH PRIVILEGES;
 STOP
 )
     echo "${dbase}" > /srv/scripts/rundeck_db.sql
