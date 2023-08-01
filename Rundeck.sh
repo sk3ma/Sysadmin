@@ -18,6 +18,7 @@ fi
 
 # Directory creation.
 if [[ ! -d "${DEST}" ]]; then
+  echo -e "\e[32;1;3m[INFO] Creating directory\e[m"
   mkdir -vp "${DEST}"
 fi
 
