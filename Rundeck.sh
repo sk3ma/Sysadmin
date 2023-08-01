@@ -8,11 +8,17 @@
 # Declaring variables.
 DISTRO=$(lsb_release -ds)
 USERID=$(id -u)
+DEST=/srv/scripts
 
 # Sanity checking.
 if [[ ${USERID} -ne "0" ]]; then
     echo -e "\e[32;1;3;5m[✗] You must be root, exiting.\e[m"
     exit 1
+fi
+
+# Directory creation.
+if [[ ! -d "${DEST}" ]]; then
+  mkdir -vp "${DEST}"
 fi
 
 # System packages.
@@ -46,7 +52,6 @@ maria() {
 # Rundeck database.
 data() {
     echo -e "\e[32;1;3m[INFO] Creating database\e[m"
-    mkdir -vp /srv/scripts
     local dbase=$(cat << STOP
 CREATE DATABASE rundeck_db;
 CREATE USER 'rundeck_user'@'localhost' IDENTIFIED BY '1q2w3e4r5t';
