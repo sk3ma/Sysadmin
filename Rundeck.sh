@@ -95,6 +95,7 @@ config() {
     systemctl enable rundeckd
 }
 
+# Firewall exception.
 fire() {
     echo -e "\e[32;1;3m[INFO] Adjusting firewall\e[m"
     ufw allow 80,443/tcp
@@ -107,9 +108,8 @@ fire() {
     exit
 }
 
-# Calling functions.
-if [[ -f /etc/lsb-release ]]; then
-    echo -e "\e[35;1;3;5m[OK] Ubuntu detected, proceeding...\e[m"
+# Defining function.
+main() {
     system
     java
     maria
@@ -117,4 +117,10 @@ if [[ -f /etc/lsb-release ]]; then
     install
     config
     fire
+}
+
+# Calling function.
+if [[ -f /etc/lsb-release ]]; then
+    echo -e "\e[35;1;3;5m[OK] Ubuntu detected, proceeding...\e[m"
+    main
 fi
