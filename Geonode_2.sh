@@ -24,7 +24,7 @@ environment() {
     sudo sed -i 's|GEOSERVER_WEB_UI_LOCATION=http://localhost/geoserver/|GEOSERVER_WEB_UI_LOCATION=http://192.168.56.80/geoserver/|g' .env
     sudo sed -i 's|GEOSERVER_PUBLIC_LOCATION=http://localhost/geoserver/|GEOSERVER_PUBLIC_LOCATION=http://192.168.56.80/geoserver/|g' .env
     sudo sed -i 's|GEOSERVER_PUBLIC_LOCATION=http://localhost/geoserver/|GEOSERVER_PUBLIC_LOCATION=http://192.168.56.80/geoserver/|g' .env
-    echo -e "\e[32;1;3mRestarting containers\e[m"
+    echo -e "\e[32;1;3m[INFO] Restarting containers\e[m"
     docker-compose up -d
     echo -e "\e[32;1;3m[INFO] Showing containers\e[m"
     docker-compose ps
