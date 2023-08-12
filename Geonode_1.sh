@@ -9,6 +9,7 @@
 DISTRO=$(lsb_release -ds)
 VERSION=$(lsb_release -cs)
 
+# Welcome message.
 cat << STOP
 # --------------------------#
 #   Welcome to the script.  #
