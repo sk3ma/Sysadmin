@@ -12,7 +12,7 @@ PORT="8081"
 INITIAL="1q2w3e4r5t"
 
 # Welcome message.
-echo -e "\e[96;1;3m[OK] Distribution: ${DISTRO}\e[m"
+echo -e "\e[96;1;3;5m[OK] Distribution: ${DISTRO}\e[m"
 cat << STOP
 #--------------------#
 # Welcome to Ubuntu. #
