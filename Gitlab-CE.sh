@@ -47,3 +47,4 @@ sudo gitlab-ctl restart
 
 # Installation complete
 echo -e "\e[33;1;3;5m[✓] Finished, installation complete.\e[m"
+exit
