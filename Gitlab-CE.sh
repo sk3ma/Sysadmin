@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-#############################################################################
-# This script will automate a Gitlab CE installation on Ubuntu 20.04.       #
-# The script installs and configures Gitlab CE and sets thte root password. #
-#############################################################################
+############################################################################
+# This script will automate a Gitlab CE installation on Ubuntu 20.04.      #
+# The script installs and configures Gitlab CE and sets the root password. #
+############################################################################
 
 # Declaring variables.
 DISTRO=$(lsb_release -ds)
