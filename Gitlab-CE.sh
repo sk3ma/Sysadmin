@@ -11,8 +11,24 @@ IP="192.168.56.72"
 PORT="8081"
 INITIAL="1q2w3e4r5t"
 
-# Download Gitlab
+# Welcome message.
 echo -e "\e[96;1;3m[OK] Distribution: ${DISTRO}\e[m"
+cat << STOP
+#--------------------#
+# Welcome to Ubuntu. #
+#--------------------#
+                    ##        .            
+              ## ## ##       ==            
+           ## ## ## ##      ===            
+       /""""""""""""""""\___/ ===        
+  ~~~ {~~ ~~~~ ~~~ ~~~~ ~~ ~ /  ===- ~~~
+       \______ o          __/            
+         \    \        __/             
+          \____\______/                    
+STOP
+
+# Download Gitlab
+echo -e "\e[32;1;3m[INFO] Installing dependencies\e[m"
 sudo apt update
 sudo apt install curl openssh-server ca-certificates -qy
 echo -e "\e[32;1;3m[INFO] Downloading Gitlab\e[m"
