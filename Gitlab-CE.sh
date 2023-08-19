@@ -16,6 +16,7 @@ echo -e "\e[96;1;3m[OK] Distribution: ${DISTRO}\e[m"
 sudo apt update
 sudo apt install curl openssh-server ca-certificates -qy
 echo -e "\e[32;1;3m[INFO] Downloading Gitlab\e[m"
+cd /tmp
 curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
 
 # Installing Gitlab
