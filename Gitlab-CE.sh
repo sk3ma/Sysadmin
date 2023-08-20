@@ -27,40 +27,40 @@ cat << STOP
           \____\______/                    
 STOP
 
-# Download Gitlab
+# Downloading Gitlab.
 echo -e "\e[32;1;3m[INFO] Installing dependencies\e[m"
 sudo apt update
-sudo apt install curl openssh-server ca-certificates -qy
+sudo apt install curl openssh-server ca-certificates git expect -qy
 echo -e "\e[32;1;3m[INFO] Downloading Gitlab\e[m"
 cd /tmp
 curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
 
-# Installing Gitlab
+# Installing Gitlab.
 echo -e "\e[32;1;3m[INFO] Installing Gitlab\e[m"
 sudo apt install gitlab-ce -qy
 
-# Configuring Gitlab
+# Configuring Gitlab.
 echo -e "\e[32;1;3m[INFO] Configuring Gitlab\e[m"
 sudo sed -i "s|external_url 'http://gitlab.example.com'|external_url 'http://${IP}:${PORT}'|g" /etc/gitlab/gitlab.rb
 sudo gitlab-ctl reconfigure
 sudo gitlab-ctl start
 
-# Resetting password
+# Resetting password.
 echo -e "\e[32;1;3m[INFO] Resetting password\e[m"
 INITIAL="${INITIAL}"
 sudo grep Password: /etc/gitlab/initial_root_password
 echo "${INITIAL}" | sudo gitlab-rake 'gitlab:password:reset[root]'
 
-# Adjusting firewall
+# Creating exception.
 echo -e "\e[32;1;3m[INFO] Adjusting firewall\e[m"
 sudo ufw allow ${PORT}/tcp
 echo "y" | sudo ufw enable
 sudo ufw reload
 
-# Restarting service
+# Restarting service.
 echo -e "\e[32;1;3m[INFO] Restarting service\e[m"
 sudo gitlab-ctl restart
 
-# Installation complete
+# Installation complete.
 echo -e "\e[33;1;3;5m[✓] Finished, installation complete.\e[m"
 exit
