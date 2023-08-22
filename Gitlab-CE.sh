@@ -48,8 +48,15 @@ sudo gitlab-ctl start
 # Resetting password.
 echo -e "\e[32;1;3m[INFO] Resetting password\e[m"
 INITIAL="${INITIAL}"
+
+# Confirmation prompt.
 sudo grep Password: /etc/gitlab/initial_root_password
-echo "${INITIAL}" | sudo gitlab-rake 'gitlab:password:reset[root]'
+echo -e "user root\npassword ${INITIAL}\npassword ${INITIAL}" | expect -c "
+spawn sudo gitlab-rake 'gitlab:password:reset[root]'
+expect \"*Do you want to continue?*\"
+send \"yes\r\"
+expect eof
+"
 
 # Creating exception.
 echo -e "\e[32;1;3m[INFO] Adjusting firewall\e[m"
