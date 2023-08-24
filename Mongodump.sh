@@ -12,6 +12,7 @@ DBASE=webapp
 DEST=/tmp/backup
 TIME=$(date +%F)
 BCKP=${DEST}/${DBNAME}-${TIME}.tgz
+LINK=https://s3.amazonaws.com/${BUCKET}/${DATE}.tgz
 BCKT=librarian
 
 # Sanity checking.
@@ -62,4 +63,4 @@ rm -vf ${BCKP}
 rm -rvf ${DEST}
 
 # End status.
-echo -e "\e[32;1;3;5m[✓] Backup available at https://s3.amazonaws.com/${BCKT}/${TIME}.tgz\e[m"
+echo -e "\e[32;1;3;5m[✓] Backup available at ${LINK}\e[m"
