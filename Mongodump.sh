@@ -8,11 +8,11 @@
 # Declaring variables.
 USERID=$(id -u)
 HOST=localhost
-DBNAME=webapp
+DBASE=webapp
 DEST=/tmp/backup
 TIME=$(date +%F)
-BACK=${DEST}/${DBNAME}-${TIME}.tgz
-BUCKET=librarian
+BCKP=${DEST}/${DBNAME}-${TIME}.tgz
+BCKT=librarian
 
 # Sanity checking.
 if [[ ${USERID} -ne "0" ]]; then
@@ -29,11 +29,12 @@ awscli() {
   curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
   unzip awscliv2.zip
   ./aws/install
+  rm -f awscliv2.zip
   echo -e "\e[33;1;3m[INFO] Finished, package installed.\e[m"
 }
 
 # Confirming existence.
-if [[ ! which /usr/bin/aws &> /dev/null ]]; then
+if ! [[ command -v aws &> /dev/null ]]; then
   awscli
 fi
 
@@ -43,22 +44,22 @@ if [[ ! -d "${DEST}" ]]; then
 fi
 
 # Display action.
-echo -e "\e[32;1;3m[INFO] Dumping: ${HOST}/${DBNAME} to S3: ${BUCKET} with Date: ${TIME}""\e[m"
+echo -e "\e[32;1;3m[INFO] Dumping: ${HOST}/${DBASE} to S3: ${BCKT} with Date: ${TIME}""\e[m"
 
 # Database backup.
-mongodump -h ${HOST} -d ${DBNAME} -o ${DEST}
+mongodump -h ${HOST} -d ${DBASE} -o ${DEST}
 
 # Create archive.
-tar -cvf ${BACK} ${TIME}.tgz -C ${DEST} .
+tar -cvf ${BCKP} ${TIME}.tgz -C ${DEST} .
 
 # S3 upload.
-aws s3 cp ${BACK} s3://${BUCKET}/ --storage-class STANDARD_IA
+aws s3 cp ${BCKP} s3://${BCKT}/ --storage-class STANDARD_IA
 
 # Remove archive.
-rm -vf ${BACK}
+rm -vf ${BCKP}
 
 # Remove directory.
 rm -rvf ${DEST}
 
 # End status.
-echo -e "\e[32;1;3;5m[✓] Backup available at https://s3.amazonaws.com/${BUCKET}/${TIME}.tgz\e[m"
+echo -e "\e[32;1;3;5m[✓] Backup available at https://s3.amazonaws.com/${BCKT}/${TIME}.tgz\e[m"
