@@ -11,9 +11,9 @@ HOST=localhost
 DBASE=webapp
 DEST=/tmp/backup
 TIME=$(date +%F)
-BCKP=${DEST}/${DBNAME}-${TIME}.tgz
+BACKUP=${DEST}/${DBNAME}-${TIME}.tgz
 LINK=https://s3.amazonaws.com/${BUCKET}/${DATE}.tgz
-BCKT=librarian
+BUCKET=librarian
 
 # Sanity checking.
 if [[ ${USERID} -ne "0" ]]; then
@@ -45,19 +45,19 @@ if [[ ! -d "${DEST}" ]]; then
 fi
 
 # Display action.
-echo -e "\e[32;1;3m[INFO] Dumping: ${HOST}/${DBASE} to S3: ${BCKT} with Date: ${TIME}""\e[m"
+echo -e "\e[32;1;3m[INFO] Dumping: ${HOST}/${DBASE} to S3: ${BUCKET} with Date: ${TIME}""\e[m"
 
 # Database backup.
 mongodump -h ${HOST} -d ${DBASE} -o ${DEST}
 
 # Create archive.
-tar -cvf ${BCKP} ${TIME}.tgz -C ${DEST} .
+tar -cvf ${BACKUP} ${TIME}.tgz -C ${DEST} .
 
 # S3 upload.
-aws s3 cp ${BCKP} s3://${BCKT}/ --storage-class STANDARD_IA
+aws s3 cp ${BACKUP} s3://${BUCKET}/ --storage-class STANDARD_IA
 
 # Remove archive.
-rm -vf ${BCKP}
+rm -vf ${BACKUP}
 
 # Remove directory.
 rm -rvf ${DEST}
