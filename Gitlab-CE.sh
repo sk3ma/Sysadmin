@@ -8,8 +8,7 @@
 # Declaring variables.
 DISTRO=$(lsb_release -ds)
 IP="192.168.56.72"
-PORT="8081"
-INITIAL="1q2w3e4r5t"
+PORT="8082"
 
 # Welcome message.
 echo -e "\e[96;1;3;5m[OK] Distribution: ${DISTRO}\e[m"
@@ -45,18 +44,11 @@ sudo sed -i "s|external_url 'http://gitlab.example.com'|external_url 'http://${I
 sudo gitlab-ctl reconfigure
 sudo gitlab-ctl start
 
-# Resetting password.
-echo -e "\e[32;1;3m[INFO] Resetting password\e[m"
-INITIAL="${INITIAL}"
-
 # Confirmation prompt.
+echo -e "\e[32;1;3m[INFO] Resetting password\e[m"
 sudo grep Password: /etc/gitlab/initial_root_password
-echo -e "user root\npassword ${INITIAL}\npassword ${INITIAL}" | expect -c "
-spawn sudo gitlab-rake 'gitlab:password:reset[root]'
-expect \"*Do you want to continue?*\"
-send \"yes\r\"
-expect eof
-"
+read -p "Please enter the new password: " answer
+echo "Entered password: ${answer}"
 
 # Creating exception.
 echo -e "\e[32;1;3m[INFO] Adjusting firewall\e[m"
