@@ -28,7 +28,7 @@ system() {
     echo -e "\e[96;1;3m[OK] Distribution: ${DISTRO}\e[m"
     sudo apt update
     echo -e "\e[32;1;3m[INFO] Installing packages\e[m"
-    sudo apt install nodejs npm python3-pip git -y
+    sudo apt install nodejs npm python3-pip git git-secrets -y
     sudo npm install npm --global
 }
 
