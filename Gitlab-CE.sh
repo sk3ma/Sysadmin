@@ -47,7 +47,7 @@ sudo gitlab-ctl start
 # Confirmation prompt.
 echo -e "\e[32;1;3m[INFO] Resetting password\e[m"
 sudo grep Password: /etc/gitlab/initial_root_password
-read -p "Please enter the new password: " answer
+read -sp "Please enter the new password: " answer
 echo "Entered password: ${answer}"
 
 # Creating exception.
