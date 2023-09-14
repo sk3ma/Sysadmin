@@ -31,7 +31,7 @@ echo -e "\e[32;1;3m[INFO] Installing dependencies\e[m"
 sudo apt update
 sudo apt install curl openssh-server ca-certificates git expect -qy
 echo -e "\e[32;1;3m[INFO] Downloading Gitlab\e[m"
-cd /tmp
+cd /tmp || exit
 curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
 
 # Installing Gitlab.
