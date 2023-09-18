@@ -18,7 +18,10 @@ fi
 
 # Adding user.
 echo -e "\e[32;1;3m[INFO] Creating user\e[m"
-yes "y" | adduser ${USERNAME} --force-badname --disabled-password --gecos "System Administrator,Room Number,Work Phone,Home Phone,Other"
+echo "y" | adduser ${USERNAME} \
+  --force-badname              \
+  --disabled-password          \
+  --gecos "System Administrator,Room Number,Work Phone,Home Phone,Other"
 
 # Adding group.
 echo -e "\e[32;1;3m[INFO] Configuring sudo\e[m"
