@@ -5,6 +5,7 @@
 ###############################################################################
 
 # Define variables.
+USERID=$(id -u)
 USERNAME="sysadmin"
 PASSWORD="$6$aLfDh4JuCYYoaba/$gGSWI6VSsW1JaN2sH4eVwFaNiKpOK03mMI8A6vqfrhkNWVCnRJWfjTW8GscDtIybxSA.JcvC3y0jx3d.GTj.c1"
 SSH_KEY="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCNf4ea7DoAgZ9Knei9RoLUkEiGTts73tYLR6R87csbngp/cA98T9pzrFfzU3nduFd7DShb6EkALgXubUq5IARTt4IAQWGkNkvLc8mNkYJEz6eT281rHdKLzjcNsbE4SSi+IQTDyIzgnCdEk76ySQ+J5ogzaxu/uBBLul5GHvqdclex2FmpxYUnchH1hOXJisT3GYeDpjGuRuaCyvXH1KCbCUhRjZhgGYfsCu48xahUui8sYzbmwbNhUq+w4zmyoVkolGu2McIOMnxtRbuISpEzkAGQglmfwu6mJegRV3EtRAAOLp3+DjASQGOhB7YX/2DhYFnDvbyyXGZS//5rLpst"
