@@ -5,31 +5,10 @@
 # The script installs and configures Gitlab CE and sets the root password. #
 ############################################################################
 
-# Declaring variables.
-DISTRO=$(lsb_release -ds)
-IP="192.168.56.72"
-PORT="8082"
-
-# Welcome message.
-echo -e "\e[96;1;3;5m[OK] Distribution: ${DISTRO}\e[m"
-cat << STOP
-#--------------------#
-# Welcome to Ubuntu. #
-#--------------------#
-                    ##        .            
-              ## ## ##       ==            
-           ## ## ## ##      ===            
-       /""""""""""""""""\___/ ===        
-  ~~~ {~~ ~~~~ ~~~ ~~~~ ~~ ~ /  ===- ~~~
-       \______ o          __/            
-         \    \        __/             
-          \____\______/                    
-STOP
-
 # Downloading Gitlab.
 echo -e "\e[32;1;3m[INFO] Installing dependencies\e[m"
 sudo apt update
-sudo apt install curl openssh-server ca-certificates git expect -qy
+sudo apt install curl expect ca-certificates git  -qy
 echo -e "\e[32;1;3m[INFO] Downloading Gitlab\e[m"
 cd /tmp || exit
 curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash
@@ -40,6 +19,8 @@ sudo apt install gitlab-ce -qy
 
 # Configuring Gitlab.
 echo -e "\e[32;1;3m[INFO] Configuring Gitlab\e[m"
+read -p "Enter the Gitlab IP: " IP # 192.168.56.72
+read -p "Enter the Gitlab PORT: " PORT # 8082
 sudo sed -i "s|external_url 'http://gitlab.example.com'|external_url 'http://${IP}:${PORT}'|g" /etc/gitlab/gitlab.rb
 sudo gitlab-ctl reconfigure
 sudo gitlab-ctl start
