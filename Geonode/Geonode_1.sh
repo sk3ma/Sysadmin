@@ -67,7 +67,7 @@ directory() {
 # Script execution.
 script() {
     echo -e "\e[33;1;3;5m[INFO] Executing second script...\e[m"
-    source /srv/scripts/Geonode_2.sh
+    ./Geonode_2.sh
 }
 
 # Defining function.
