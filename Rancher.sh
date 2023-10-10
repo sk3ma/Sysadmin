@@ -32,6 +32,7 @@ install() {
          \    \        __/             
           \____\______/                    
 STOP
+    echo
     echo -e "\e[32;1;3m[INFO] Updating system\e[m"
     apt update
     echo -e "\e[32;1;3m[INFO] Adding repository\e[m"
