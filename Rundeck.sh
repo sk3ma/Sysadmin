@@ -111,7 +111,6 @@ fire() {
     echo -e "\e[32;1;3m[INFO] Restarting Rundeck\e[m"
     systemctl restart rundeckd
     echo -e "\e[33;1;3;5m[✓] Finished, installation complete\e[m"
-    exit
 }
 
 # Defining function.
@@ -123,6 +122,7 @@ main() {
     install
     config
     fire
+    exit
 }
 
 # Calling function.
