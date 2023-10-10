@@ -8,21 +8,6 @@
 # Declaring variable.
 DISTRO=$(lsb_release -ds)
 
-# Welcome message.
-cat << STOP
-#--------------------#
-# Welcome to Ubuntu. #
-#--------------------#
-                    ##        .            
-              ## ## ##       ==            
-           ## ## ## ##      ===            
-       /""""""""""""""""\___/ ===        
-  ~~~ {~~ ~~~~ ~~~ ~~~~ ~~ ~ /  ===- ~~~
-       \______ o          __/            
-         \    \        __/             
-          \____\______/                    
-STOP
-
 # Package installation.
 system() {
     echo -e "\e[96;1;3m[OK] Distribution: ${DISTRO}\e[m"
@@ -75,7 +60,6 @@ STOP
     echo -e "\e[32;1;3m[INFO] Executing playbook\e[m"
     ansible-playbook -i inventory install.yml
     echo -e "\e[33;1;3;5m[✓] Finished, installation complete.\e[m"
-    exit
 }
 
 # Defining function.
@@ -83,6 +67,7 @@ main() {
     system
     install
     awx
+    exit
 }
 
 # Calling function.
