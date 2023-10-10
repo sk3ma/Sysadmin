@@ -67,7 +67,6 @@ container() {
     rancher/rancher:latest
     docker logs rancher 2>&1 | grep "Bootstrap Password:"
     echo -e "\e[33;1;3;5m[✓] Finished, Docker installed.\e[m"
-    exit
 }
 
 # Defining function.
@@ -75,6 +74,7 @@ main() {
     install
     service
     container
+    exit
 }
 
 # Calling function.
