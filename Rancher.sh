@@ -63,9 +63,9 @@ container() {
     -p 80:80                  \
     -p 443:443                \
     -v /container             \
-    --name rancher            \
+    --name master-node            \
     rancher/rancher:latest
-    docker logs rancher 2>&1 | grep "Bootstrap Password:"
+    docker logs master-node 2>&1 | grep "Bootstrap Password:"
     echo -e "\e[33;1;3;5m[✓] Finished, Docker installed.\e[m"
 }
 
