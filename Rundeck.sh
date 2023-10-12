@@ -12,7 +12,7 @@ DEST=/srv/scripts
 
 # Sanity checking.
 if [[ ${USERID} -ne "0" ]]; then
-    echo -e "\e[32;1;3;5m[✗] You must be root, exiting\e[m"
+    echo -e "\e[32;1;3;5m[❌] You must be root, exiting\e[m"
     exit 1
 fi
 
@@ -25,6 +25,7 @@ fi
 # System packages.
 system() {
     echo -e "\e[96;1;3m[OK] Distribution: ${DISTRO}\e[m"
+    echo
     echo -e "\e[32;1;3m[INFO] Updating system\e[m"
     apt update
 }
@@ -110,7 +111,7 @@ fire() {
     ufw reload
     echo -e "\e[32;1;3m[INFO] Restarting Rundeck\e[m"
     systemctl restart rundeckd
-    echo -e "\e[33;1;3;5m[✓] Finished, installation complete\e[m"
+    echo -e "\e[33;1;3;5m[✅] Finished, installation complete\e[m"
 }
 
 # Defining function.
@@ -122,11 +123,11 @@ main() {
     install
     config
     fire
-    exit
 }
 
 # Calling function.
 if [[ -f /etc/lsb-release ]]; then
     echo -e "\e[35;1;3;5m[OK] Ubuntu detected, proceeding...\e[m"
     main
+    exit
 fi
