@@ -65,7 +65,7 @@ root
 XDRIOXY=
 semaphore
 /opt/semaphore
-http://localhost:3000
+http://192.168.56.74:3000
 no
 no
 no
