@@ -19,6 +19,7 @@ fi
 # Docker installation.
 install() {
     echo -e "\e[96;1;3m[OK] Distribution: ${DISTRO}\e[m"
+    echo
     cat << STOP
 #--------------------#
 # Welcome to Ubuntu. #
@@ -74,11 +75,11 @@ main() {
     install
     service
     container
-    exit
 }
 
 # Calling function.
 if [[ -f /etc/lsb-release ]]; then
     echo -e "\e[35;1;3;5m[OK] Ubuntu detected, proceeding...\e[m"
     main
+    exit
 fi
