@@ -67,11 +67,11 @@ main() {
     system
     install
     awx
-    exit
 }
 
 # Calling function.
 if [[ -f /etc/lsb-release ]]; then
     echo -e "\e[35;1;3;5m[OK] Ubuntu detected, proceeding...\e[m"
     main
+    exit
 fi
