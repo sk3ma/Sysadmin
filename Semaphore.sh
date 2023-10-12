@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ######################################################################
-# This script automates a Semaphore installation Ubuntu 20.04.       #
+# This script automates a Semaphore installation Ubuntu 22.04.       #
 # The script installs Ansible, MariaDB, Semaphore and configures it. #
 ######################################################################
 
