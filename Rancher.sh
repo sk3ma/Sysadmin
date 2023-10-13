@@ -12,7 +12,7 @@ USERID=$(id -u)
 
 # Sanity checking.
 if [[ ${USERID} -ne "0" ]]; then
-    echo -e "\e[32;1;3;5m[✗] You must be root, exiting\e[m"
+    echo -e "\e[32;1;3;5m[❌] You must be root, exiting\e[m"
     exit 1
 fi
 
@@ -67,7 +67,7 @@ container() {
     --name master-node        \
     rancher/rancher:latest
     docker logs master-node 2>&1 | grep "Bootstrap Password:"
-    echo -e "\e[33;1;3;5m[✓] Finished, Docker installed.\e[m"
+    echo -e "\e[33;1;3;5m[✅] Finished, Docker installed.\e[m"
 }
 
 # Defining function.
