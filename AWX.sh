@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-#############################################################################
-# The purpose of the script is to automate an AWX installation on Ubuntu.   #
-# The script installs Docker and Ansible then executes an Ansible playbook. #
-#############################################################################
+##################################################################################
+# The purpose of the script is to automate an AWX installation on Ubuntu 20.04.  #
+# The script installs Docker, Ansible and AWX then executes an Ansible playbook. #
+##################################################################################
 
 # Declaring variable.
 DISTRO=$(lsb_release -ds)
@@ -32,11 +32,11 @@ deps() {
 awx() {
     echo -e "\e[32;1;3m[INFO] Installing Ansible\e[m"
     sudo apt install pwgen unzip ansible -y
-    local secret=$(pwgen -N 1 -s 40)
-     echo -e "\e[32;1;3m[INFO] Downloading AWX\e[m"
-    wget -P /tmp https://github.com/ansible/awx/archive/17.1.0.zip; unzip /tmp/17.1.0.zip
-    unzip 17.1.0.zip
+    echo -e "\e[32;1;3m[INFO] Downloading AWX\e[m"
+    wget -P /tmp https://github.com/ansible/awx/archive/17.1.0.zip
+    unzip /tmp/17.1.0.zip
     echo -e "\e[32;1;3m[INFO] Configuring inventory\e[m"
+    local secret=$(pwgen -N 1 -s 40)
     sudo sed -i 's|admin_user=|# admin_user=admin|g' /tmp/awx-17.1.0/installer/inventory
     echo -e "admin_user=admin" >> /tmp/awx-17.1.0/installer/inventory
     echo -e "admin_password=1q2w3e4r5t" >> /tmp/awx-17.1.0/installer/inventory
