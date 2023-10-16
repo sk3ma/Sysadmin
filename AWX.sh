@@ -37,29 +37,14 @@ awx() {
     wget https://github.com/ansible/awx/archive/17.1.0.zip
     unzip 17.1.0.zip
     cd awx-17.1.0/installer
-    sudo rm -f inventory
-    sudo tee inventory << STOP > /dev/null
-localhost ansible_connection=local ansible_python_interpreter="/usr/bin/env python3"
-[all:vars]
-dockerhub_base=ansible
-awx_task_hostname=awx
-awx_web_hostname=awxweb
-postgres_data_dir="~/.awx/pgdocker"
-host_port=80
-host_port_ssl=443
-docker_compose_dir="~/.awx/awxcompose"
-pg_username=awx
-pg_password=awxpass
-pg_database=awx
-pg_port=5432
-admin_user=admin
-admin_password=1q2w3e4r5t
-secret_key=${secret}
-create_preload_data=True
-STOP
+    echo -e "\e[32;1;3m[INFO] Configuring inventory\e[m"
+    sudo sed -i 's|admin_user=|# admin_user=admin|g' inventory
+    echo -e "admin_user=admin" >> inventory
+    echo -e "admin_password=1q2w3e4r5t" >> inventory
+    echo -e "secret_key=${secret}" >> inventory
     echo -e "\e[32;1;3m[INFO] Executing playbook\e[m"
-    ansible-playbook -i inventory install.yml
-    echo -e "\e[33;1;3;5m[✓] Finished, installation complete.\e[m"
+    sudo ansible-playbook -i inventory install.yml
+    echo -e "\e[33;1;3;5m[OK] Finished, installation complete.\e[m"
 }
 
 # Defining function.
