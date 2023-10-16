@@ -18,7 +18,7 @@ system() {
 }
 
 # Docker installation.
-install() {
+deps() {
     echo -e "\e[32;1;3m[INFO] Installing packages\e[m"
     sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
     sudo bash -c 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -'
@@ -31,26 +31,25 @@ install() {
 # Ansible installation.
 awx() {
     echo -e "\e[32;1;3m[INFO] Installing Ansible\e[m"
-    cd /tmp
     sudo apt install pwgen unzip ansible -y
     local secret=$(pwgen -N 1 -s 40)
-    wget https://github.com/ansible/awx/archive/17.1.0.zip
+     echo -e "\e[32;1;3m[INFO] Downloading AWX\e[m"
+    wget -P /tmp https://github.com/ansible/awx/archive/17.1.0.zip; unzip /tmp/17.1.0.zip
     unzip 17.1.0.zip
-    cd awx-17.1.0/installer
     echo -e "\e[32;1;3m[INFO] Configuring inventory\e[m"
-    sudo sed -i 's|admin_user=|# admin_user=admin|g' inventory
-    echo -e "admin_user=admin" >> inventory
-    echo -e "admin_password=1q2w3e4r5t" >> inventory
-    echo -e "secret_key=${secret}" >> inventory
+    sudo sed -i 's|admin_user=|# admin_user=admin|g' /tmp/awx-17.1.0/installer/inventory
+    echo -e "admin_user=admin" >> /tmp/awx-17.1.0/installer/inventory
+    echo -e "admin_password=1q2w3e4r5t" >> /tmp/awx-17.1.0/installer/inventory
+    echo -e "secret_key=${secret}" >> /tmp/awx-17.1.0/installer/inventory
     echo -e "\e[32;1;3m[INFO] Executing playbook\e[m"
-    sudo ansible-playbook -i inventory install.yml
+    sudo ansible-playbook -i /tmp/awx-17.1.0/installer/inventory /tmp/awx-17.1.0/installer/install.yml
     echo -e "\e[33;1;3;5m[OK] Finished, installation complete.\e[m"
 }
 
 # Defining function.
 main() {
     system
-    install
+    deps
     awx
 }
 
