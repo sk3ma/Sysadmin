@@ -26,12 +26,16 @@ deps() {
     echo -e "\e[32;1;3m[INFO] Installing Docker\e[m"
     sudo apt install docker-ce docker-compose -y
     pip3 install docker-compose==1.25.0
+    echo -e "\e[32;1;3m[INFO] Docker version\e[m"
+    docker --version
 }
 
 # Ansible installation.
 awx() {
     echo -e "\e[32;1;3m[INFO] Installing Ansible\e[m"
     sudo apt install pwgen unzip ansible -y
+    echo -e "\e[32;1;3m[INFO] Ansible version\e[m"
+    sudo ansible --version
     echo -e "\e[32;1;3m[INFO] Downloading AWX\e[m"
     wget -P /tmp https://github.com/ansible/awx/archive/17.1.0.zip
     unzip /tmp/17.1.0.zip -d /tmp && rm -f /tmp/17.1.0.zip
