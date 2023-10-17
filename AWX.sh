@@ -34,7 +34,7 @@ awx() {
     sudo apt install pwgen unzip ansible -y
     echo -e "\e[32;1;3m[INFO] Downloading AWX\e[m"
     wget -P /tmp https://github.com/ansible/awx/archive/17.1.0.zip
-    unzip /tmp/17.1.0.zip -d /tmp
+    unzip /tmp/17.1.0.zip -d /tmp && rm -f /tmp/17.1.0.zip
     echo -e "\e[32;1;3m[INFO] Configuring inventory\e[m"
     local secret=$(pwgen -N 1 -s 40)
     sudo sed -i 's|admin_user=|# admin_user=admin|g' /tmp/awx-17.1.0/installer/inventory
