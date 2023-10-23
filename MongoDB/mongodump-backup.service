@@ -1,0 +1,11 @@
+[Unit]
+Description=MongoDB Backup Script
+Wants=mongodump-backup.timer
+
+[Service]
+Type=simple
+ExecStart=bash Mongodump.sh
+User=root
+
+[Install]
+WantedBy=default.target

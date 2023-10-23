@@ -1,0 +1,10 @@
+[Unit]
+Description=MongoDB Daily Backup
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+Unit=mongodump-backup.service
+
+[Install]
+WantedBy=timers.target
