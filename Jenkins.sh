@@ -142,7 +142,6 @@ service() {
     cat /var/lib/jenkins/secrets/initialAdminPassword
     echo -e "\e[33;1;3m[INFO] Keycloak URL - http://${IPADDR}:8080\e[m"
     echo -e "\e[33;1;3m[INFO] Jenkins URL - http://${IPADDR}:8090\e[m"
-    33;32;1;3mKeycloak URL - http://${IPADDR}:8080
     exit
 }
 
