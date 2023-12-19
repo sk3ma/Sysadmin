@@ -35,9 +35,9 @@ java() {
 jenkins() {
     echo -e "\e[32;1;3m[INFO] Adding repository\e[m"
     cd /opt
-    curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
-    bash -c 'echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/" >> /etc/apt/sources.list'
-    echo -e "\e[32;1;3mInstalling Jenkins\e[m"
+    curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+    bash -c 'echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/" >> /etc/apt/sources.list.d/jenkins.list'
+    echo -e "\e[32;1;3m[INFO] Installing Jenkins\e[m"
     apt update
     apt install jenkins -qy
     echo 'jenkins ALL=(ALL) NOPASSWD:ALL' | tee /etc/sudoers.d/jenkins > /dev/null
