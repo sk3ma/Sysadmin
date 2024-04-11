@@ -18,19 +18,31 @@ menu() {
   echo "2. Run uptime command"
   echo "3. Run df command"
   echo "4. Run free command"
-  echo "5. Exit main menu"
+  echo "5. List running processes"
+  echo "6. Check system time and date"
+  echo "7. List open files and file descriptors"
+  echo "8. List users and their details"
+  echo "9. Check SSH configuration"
+  echo "10. List installed services and their status"
+  echo "11. Exit main menu"
 }
 
 # Show user options.
 options() {
   local choice
-  read -p "Select choice [1 - 5] " choice
+  read -p "Select choice [1 - 11] " choice
   case ${choice} in
     1) $ANSIBLE_CMD ping ;;
     2) $ANSIBLE_CMD command -a uptime ;;
     3) $ANSIBLE_CMD command -a df ;;
     4) $ANSIBLE_CMD command -a free ;;
-    5) exit 0 ;;
+    5) $ANSIBLE_CMD command -a "ps aux" ;;
+    6) $ANSIBLE_CMD command -a date ;;
+    7) $ANSIBLE_CMD command -a lsof ;;
+    8) $ANSIBLE_CMD command -a "cat /etc/passwd" ;;
+    9) $ANSIBLE_CMD command -a "cat /etc/ssh/sshd_config" ;;
+    10) $ANSIBLE_CMD command -a "systemctl list-units --type=service" ;;
+    11) exit 0 ;;
     *) echo "Invalid selection..." && sleep 2 ;;
   esac
   pause
