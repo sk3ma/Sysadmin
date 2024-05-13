@@ -1,29 +1,53 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Set environment variables.
-AWS_PROFILE="sandbox"
-AWS_REGION="eu-west-1"
+# Define function variable.
+AWS_CMD="aws"
 
-# Query EC2 instances.
-echo "Listing EC2 instances:"
-aws ec2 describe-instances --profile $AWS_PROFILE --region $AWS_REGION
+# Creating pause function.
+pause() {
+  read -p "Press [Enter] key to proceed..." fackEnterKey
+}
 
-# Query IAM users.
-echo "Listing IAM users:"
-aws iam list-users --profile $AWS_PROFILE
+# Prompt for AWS profile and region.
+command() {
+  read -p "Enter AWS profile: " aws_profile
+  read -p "Enter AWS region: " aws_region
+}
 
-# List S3 buckets.
-echo "Listing S3 buckets:"
-aws s3 ls --profile $AWS_PROFILE
+# Show main menu.
+menu() {
+  clear
+  echo "#####################"
+  echo "# M A I N - M E N U #"
+  echo "#####################"
+  echo
+  echo "1. Run CLI command"
+  echo "2. Exit the script"
+  echo
+}
 
-# Describe RDS instances.
-echo "Describing RDS instances:"
-aws rds describe-db-instances --profile $AWS_PROFILE --region $AWS_REGION
+# Show user options.
+options() {
+  local choice
+  read -p "Select choice [1 - 2] " choice
+  case ${choice} in
+    1) command && ${AWS_CMD} ec2 describe-instances --profile ${aws_profile} --region ${aws_region} ;;
+    2) exit 0 ;;
+    *) echo "Invalid selection..." && sleep 2 ;;
+  esac
+  pause
+}
 
-# Describe CloudWatch logs.
-echo "Describing CloudWatch log groups:"
-aws logs describe-log-groups --profile $AWS_PROFILE --region $AWS_REGION
+# Ignore SIGINT signal.
+sigterm() {
+  echo "Ctrl+C is disabled, execute option 2 to exit."
+}
 
-# Describe CloudFormation stacks.
-echo "Describing CloudFormation stacks:"
-aws cloudformation describe-stacks --profile $AWS_PROFILE --region $AWS_REGION
+# Introduce trapping signal.
+trap sigterm SIGINT
+
+# Introduce infinite loop.
+while true; do
+  menu
+  options
+done
