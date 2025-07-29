@@ -1,0 +1,53 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Defining Vagrant variables.
+K8S_VERSION      = "v1.33.3"
+VAGRANT_VM_COUNT = {
+  "rke2-master-1" => { ip: "192.168.56.10" },
+#  "rke2-master-2" => { ip: "192.168.56.11" },
+#  "rke2-worker-1" => { ip: "192.168.56.21" },
+#  "rke2-worker-2" => { ip: "192.168.56.22" },
+#  "rke2-worker-3" => { ip: "192.168.56.23" }
+}
+
+# Defining Vagrant configuration.
+Vagrant.configure("2") do |config|
+  config.disksize.size = '50GB'
+  VAGRANT_VM_COUNT.each do |name, opts|
+    config.vm.define name do |node|
+      node.vm.box      = "rockylinux/9"
+      node.vm.hostname = name
+      node.vm.network "private_network", ip: opts[:ip]
+      node.vm.network "forwarded_port", guest: 443, host: 8443
+      node.vm.network "forwarded_port", guest: 80, host: 8080
+      node.vm.provider "virtualbox" do |vb|
+        vb.memory = 12288
+        vb.cpus   = 2
+      end
+      node.vm.provision "shell", inline: <<-SHELL
+        echo -e "\e[33;1;3m[🟡] Installing dependencies...\e[0m"
+        dnf install curl wget git vim -y
+        echo -e "\e[33;1;3m[🟡] Installing Docker...\e[0m"
+        dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+        dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+        systemctl enable docker --now
+        usermod -aG docker vagrant
+        echo -e "\e[33;1;3m[🟡] Installing k3d...\e[0m"
+        curl -s -Lo /usr/local/bin/k3d https://github.com/k3d-io/k3d/releases/latest/download/k3d-linux-amd64
+        chmod +x /usr/local/bin/k3d
+        ln -sf /usr/local/bin/k3d /usr/bin/k3d
+        echo -e "\e[33;1;3m[🟡] Installing kubectl...\e[0m"
+        curl -LO "https://dl.k8s.io/release/#{K8S_VERSION}/bin/linux/amd64/kubectl"
+        install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+        rm -f kubectl
+        echo "nameserver 8.8.8.8" > /etc/resolv.conf
+        echo "export PS1='\\[\e]0;\\u@\\h: \\w\\a\\]\${debian_chroot:+(\$debian_chroot)}\\[\\033[01;32m\\]\\u\\[\\033[00m\\]\\[\\033[01;33m\\]@\\[\\033[00m\\]\\[\\033[01;31m\\]\\h\\[\\033[00m\\]\\[\\033[01;33m\\]:\\[\\033[00m\\]\\[\\033[01;35m\\]\\w\\[\\033[00m\\]\\$ '" >> /home/vagrant/.bashrc
+        echo "export PS1='\\[\e]0;\\u@\\h: \\w\\a\\]\${debian_chroot:+(\$debian_chroot)}\\[\\033[01;32m\\]\\u\\[\\033[00m\\]\\[\\033[01;33m\\]@\\[\\033[00m\\]\\[\\033[01;31m\\]\\h\\[\\033[00m\\]\\[\\033[01;33m\\]:\\[\\033[00m\\]\\[\\033[01;35m\\]\\w\\[\\033[00m\\]\\$ '" >> /root/.bashrc 
+        echo -e "\e[33;1;3m[🟢] Setup complete...\e[0m"
+      SHELL
+      # Script to provision.
+      node.vm.provision "shell", path: "bootstrap_rancher.sh", privileged: false
+    end
+  end
+end
