@@ -7,9 +7,9 @@ NORMAL="\033[0m"
 YELLOW="\033[0;33m"
 
 # Define script variables.
-users_to_remove=("osadmin" "Jpublic" "Ranybody")
-users_to_keep=("levone" "danielb")
-groups_to_remove=("osadmin" "Jpublic" "Ranybody")
+users_to_remove=("osadmin" "jpublic" "ranybody")
+users_to_keep=("cadel" "ktrap")
+groups_to_remove=("osadmin" "jpublic" "ranybody")
 
 # Sanity checking.
 if [[ "${EUID}" -ne "0" ]]; then
