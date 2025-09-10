@@ -10,6 +10,18 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 NORMAL='\033[0m'
 
+# Display script banner.
+cat << "STOP"
+                    ##        .            
+              ## ## ##       ==            
+           ## ## ## ##      ===            
+       /""""""""""""""""\___/ ===        
+      {                      /  ===-  
+       \______ o          __/            
+         \    \        __/             
+          \____\______/                    
+STOP
+
 # Zabbix server function.
 update_zabbix_server() {
     echo -e "${GREEN}Updating Zabbix server and frontend...${NORMAL}"
