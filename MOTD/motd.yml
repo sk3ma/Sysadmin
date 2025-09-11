@@ -1,0 +1,51 @@
+---
+##################################################################################
+# Ansible playbook to automate prompt string colours and environment-aware MOTD. #
+##################################################################################
+
+- name: Configure custom personalization
+  hosts: all
+  become: true
+
+  vars:
+    ps1_string: '\[\e[31m\]\u\[\e[0m\]\[\e[32m\]@\[\e[0m\]\[\e[33m\]\h\[\e[0m\]\[\e[32m\]:\[\e[0m\]\[\e[35m\]\w\[\e[0m\]\$ '
+    env_name: "{{ hostvars[inventory_hostname].env_name | default('UNKNOWN') }}"
+
+  tasks:
+    - name: Ensure screenfetch is installed
+      ansible.builtin.package:
+        name: screenfetch
+        state: present
+
+    - name: Configure global PS1
+      ansible.builtin.copy:
+        dest: /etc/profile.d/custom_ps1.sh
+        owner: root
+        group: root
+        mode: '0644'
+        content: |
+          # Custom PS1 Prompt
+          export PS1="{{ ps1_string }}"
+
+    - name: Enable screenfetch on login
+      ansible.builtin.copy:
+        dest: /etc/profile.d/screenfetch.sh
+        owner: root
+        group: root
+        mode: '0755'
+        content: |
+          #!/bin/bash
+          if command -v screenfetch >/dev/null 2>&1; then
+              screenfetch -n -N
+          fi
+
+    - name: Deploy MOTD banner
+      ansible.builtin.template:
+        src: motd.j2
+        dest: /etc/motd
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: End Ansible playbook
+      ansible.builtin.meta: end_play
