@@ -2,9 +2,8 @@
 
 set -euo pipefail
 
-# Declaring variables.
-OUTDIR="inventory_raw"
-mkdir -p "${OUTDIR}"
+# Decalring variables.
+OUTDIR="acc_inv"
 PROFILE="${AWS_PROFILE:-robanybody}"
 GREEN="\033[1;32m"
 YELLOW="\033[1;33m"
@@ -12,6 +11,9 @@ BLUE="\033[1;34m"
 RED="\033[1;31m"
 CYAN="\033[1;36m"
 RESET="\033[0m"
+
+# Inventory directory.
+mkdir -p "${OUTDIR}"
 
 # Interrupt signal.
 cleanup() {
@@ -22,7 +24,7 @@ cleanup() {
 }
 trap cleanup INT
 
-# Script header.
+# Script banner.
 header() {
   echo
   echo -e "${CYAN}======================${RESET}"
@@ -54,12 +56,11 @@ check_service() {
   fi
 }
 
-# Audit inventory.
+# Audit account.
 scrape_inventory() {
   echo -e "${GREEN}Gathering inventory for profile:${RESET} ${BLUE}${PROFILE}${RESET}"
   echo -e "${YELLOW}Results will be stored in:${RESET} ${BLUE}${OUTDIR}${RESET}"
   echo
-
   check_service "IAM Users" iam list-users
   check_service "IAM Roles" iam list-roles
   check_service "IAM Policies" iam list-policies --scope Local
@@ -95,13 +96,12 @@ scrape_inventory() {
   check_service "Step Functions" stepfunctions list-state-machines
   check_service "CodePipeline" codepipeline list-pipelines
   check_service "CodeBuild" codebuild list-projects
-
   echo
   echo -e "${YELLOW}Inventory gathering complete!${RESET}"
   pause
 }
 
-# View findings.
+# Show findings.
 view_inventory() {
   while true; do
     clear
@@ -148,7 +148,7 @@ view_inventory() {
   done
 }
 
-# Script menu.
+# User menu.
 menu() {
   clear
   header
