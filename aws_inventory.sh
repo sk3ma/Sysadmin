@@ -2,36 +2,41 @@
 
 set -euo pipefail
 
-OUTDIR="${HOME}/aws_inv"
+# Declaring variables.
+OUTDIR="inventory_raw"
 mkdir -p "${OUTDIR}"
 PROFILE="${AWS_PROFILE:-robanybody}"
 GREEN="\033[1;32m"
 YELLOW="\033[1;33m"
 BLUE="\033[1;34m"
 RED="\033[1;31m"
+CYAN="\033[1;36m"
 RESET="\033[0m"
 
+# Interrupt signal.
 cleanup() {
   echo
-  echo -e "${RED}Caught interrupt signal (Ctrl+C). Cleaning up...${RESET}"
-  echo -e "${RED}Exiting AWS Inventory Tool safely.${RESET}"
+  echo -e "${RED}Caught interrupt signal, exiting...${RESET}"
   echo
   exit 1
 }
 trap cleanup INT
 
+# Script header.
 header() {
   echo
-  echo -e "${RED}====================${RESET}"
-  echo -e "${RED} AWS Inventory Tool ${RESET}"
-  echo -e "${RED}====================${RESET}"
+  echo -e "${CYAN}======================${RESET}"
+  echo -e "${CYAN}# AWS Inventory Tool #${RESET}"
+  echo -e "${CYAN}======================${RESET}"
   echo
 }
 
+# Pause function.
 pause() {
   read -rp "Press Enter to continue..."
 }
 
+# AWS profile.
 check_service() {
   local name="${1}"
   shift
@@ -49,14 +54,10 @@ check_service() {
   fi
 }
 
+# Audit inventory.
 scrape_inventory() {
-  header
-  echo -e "${YELLOW}Gathering AWS inventory for profile:${RESET} ${BLUE}${PROFILE}${RESET}"
+  echo -e "${GREEN}Gathering inventory for profile:${RESET} ${BLUE}${PROFILE}${RESET}"
   echo -e "${YELLOW}Results will be stored in:${RESET} ${BLUE}${OUTDIR}${RESET}"
-  echo
-
-  aws sts get-caller-identity --profile "${PROFILE}" --output json | tee "${OUTDIR}/account.json"
-
   echo
 
   check_service "IAM Users" iam list-users
@@ -69,7 +70,6 @@ scrape_inventory() {
   check_service "ECS Clusters" ecs list-clusters
   check_service "ECR Repositories" ecr describe-repositories
   check_service "Lambda Functions" lambda list-functions
-  check_service "API Gateway v1" apigateway get-rest-apis
   check_service "API Gateway v2" apigatewayv2 get-apis
   check_service "S3 Buckets" s3api list-buckets
   check_service "RDS Instances" rds describe-db-instances
@@ -88,7 +88,6 @@ scrape_inventory() {
   check_service "Kinesis Streams" kinesis list-streams
   check_service "CloudWatch Alarms" cloudwatch describe-alarms
   check_service "Log Groups" logs describe-log-groups
-  check_service "GuardDuty Detectors" guardduty list-detectors
   check_service "KMS Keys" kms list-keys
   check_service "Secrets Manager" secretsmanager list-secrets
   check_service "ACM Certificates" acm list-certificates
@@ -98,10 +97,11 @@ scrape_inventory() {
   check_service "CodeBuild" codebuild list-projects
 
   echo
-  echo -e "${GREEN}Inventory gathering complete!${RESET}"
+  echo -e "${YELLOW}Inventory gathering complete!${RESET}"
   pause
 }
 
+# View findings.
 view_inventory() {
   while true; do
     clear
@@ -113,7 +113,7 @@ view_inventory() {
     files=("${OUTDIR}"/*.json)
 
     if [[ ${#files[@]} -eq 0 ]]; then
-      echo -e "${RED}No inventory files found.${RESET} Run option 1 first."
+      echo -e "${RED}No inventory files found.${RESET} Choose option 1 first."
       pause
       return
     fi
@@ -142,19 +142,20 @@ view_inventory() {
         trap cleanup INT
       } || true
     else
-      echo -e "${RED}Invalid selection.${RESET}"
+      echo -e "${RED}Invalid selection, try again.${RESET}"
       sleep 1
     fi
   done
 }
 
+# Script menu.
 menu() {
+  clear
+  header
   while true; do
-    clear
-    header
-    echo -e "${YELLOW}1) Scrape AWS inventory${RESET}"
+    echo -e "${GREEN}1) Scrape AWS inventory${RESET}"
     echo -e "${YELLOW}2) View inventory findings${RESET}"
-    echo -e "${YELLOW}3) Exit the script${RESET}"
+    echo -e "${RED}3) Exit the script${RESET}"
     echo
     read -rp "$(echo -e "${BLUE}Choose an option: ${RESET}")" opt
 
@@ -162,9 +163,12 @@ menu() {
       1) scrape_inventory ;;
       2) view_inventory ;;
       3) echo -e "${GREEN}Exiting...${RESET}"; exit 0 ;;
-      *) echo -e "${RED}Invalid choice${RESET}"; sleep 1 ;;
+      *) echo -e "${RED}Invalid choice, try again.${RESET}"; sleep 1 ;;
     esac
+    clear
+    header
   done
 }
 
+# Calling function.
 menu
